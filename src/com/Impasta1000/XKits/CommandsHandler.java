@@ -60,6 +60,11 @@ public class CommandsHandler implements CommandExecutor {
 				
 				if (args[0].equalsIgnoreCase("join")) {
 					String arenaName = args[1];
+					if (!arenaManager.checkArenaInFile(player, arenaName)) {
+						rApi.sendColouredMessage(player, "&c(!) Unable to find Arena with the name of &e'" + arenaName + "'&c.");
+						rApi.sendColouredMessage(player, "&c(!) Please input a valid Arena name.");
+						return true;
+					}
 					if (ArenaListener.playersInArena.contains(player.getName())) {
 						player.sendMessage("You are already in the KitPVP Arena!");
 						return true;
@@ -73,7 +78,7 @@ public class CommandsHandler implements CommandExecutor {
 				if (args[0].equalsIgnoreCase("kits")) {
 					if (args[1].equalsIgnoreCase("fighter")) {
 						if (!ArenaListener.playersInArena.contains(player.getName())) {
-							rApi.sendColouredMessage(player, "You need to join the Arena.");
+							rApi.sendColouredMessage(player, "You need to join the KitPVP Arena.");
 							return true;
 						}
 						fighterKit.setKit(player);

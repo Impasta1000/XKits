@@ -19,9 +19,11 @@ public class ArenaManager {
 	 */
 	
 	private ConfigManager configManager;
+	private ResourcesAPI rApi;
 	
 	public ArenaManager(XKits plugin) {
 		this.configManager = new ConfigManager(plugin);
+		this.rApi = new ResourcesAPI(plugin);
 	}
 	
 	public void setArenaLobby(Player player, String arenaName) {
@@ -47,7 +49,9 @@ public class ArenaManager {
 			e.printStackTrace();
 		}
 		
-		player.sendMessage(arenaName + "'s spawn has been set!");
+		//TODO Add overwritten message
+		rApi.sendColouredMessage(player, " &2(!) Spawn has been set for &9" + arenaName);
+		rApi.sendColouredMessage(player, " &2(!) The co-ordinates are: &3" + x + ", " + y + ", " + z);
 	}
 	
 	public void teleportToArenaLobby(Player player, String arenaName) {
@@ -56,8 +60,9 @@ public class ArenaManager {
 		configManager.loadConfig(ConfigFile.ARENAS);
 		FileConfiguration arenaConfig = configManager.getConfig(ConfigFile.ARENAS);
 		
-		if (!arenaConfig.contains(worldName + "." + arenaName)) {
-			player.sendMessage(arenaName + " cannot be found!");
+		if (!checkArenaInFile(player, arenaName)) {
+			rApi.sendColouredMessage(player, "&c(!) Unable to find Arena with the name of &e'" + arenaName + "'&c.");
+			rApi.sendColouredMessage(player, "&c(!) Please input a valid Arena name.");
 			return;
 		}
 		
@@ -72,7 +77,7 @@ public class ArenaManager {
 		player.sendMessage("You have been teleported to " + arenaName + ".");
 	}
 	
-	public boolean checkArena(Player player, String arenaName) {
+	public boolean checkArenaInFile(Player player, String arenaName) {
 		
 		String worldName = player.getWorld().getName();
 		
