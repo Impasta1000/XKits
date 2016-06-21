@@ -72,6 +72,21 @@ public class ArenaManager {
 		player.sendMessage("You have been teleported to " + arenaName + ".");
 	}
 	
+	public boolean checkArena(Player player, String arenaName) {
+		
+		String worldName = player.getWorld().getName();
+		
+		configManager.loadConfig(ConfigFile.ARENAS);
+		FileConfiguration arenaConfig = configManager.getConfig(ConfigFile.ARENAS);
+		
+		if (!arenaConfig.contains(worldName + "." + arenaName)) {
+			return false;
+		} else {
+			return true;
+		}
+		
+	}
+	
 	public boolean checkPlayerInArena(Player player) {
 		if (ArenaListener.playersInArena.contains(player.getName())) {
 			return true;
