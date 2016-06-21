@@ -1,0 +1,14 @@
+############################################
+#                                          #
+#               XKits Config               #
+#                                          #
+############################################
+
+# This will be displayed in front of every message
+prefix: "<&8&lXKits>"
+
+# List of different messages
+messages:
+    
+    # This will be displayed when the player has insufficient permission to do something
+    no-permission: "&cYou have insufficient permission!"
