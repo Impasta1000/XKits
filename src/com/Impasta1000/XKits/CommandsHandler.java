@@ -6,17 +6,18 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.Impasta1000.XKits.kits.FighterKit;
-import com.Impasta1000.XKits.listeners.ArenaListener;
 import com.Impasta1000.XKits.resources.ArenaManager;
 import com.Impasta1000.XKits.resources.ResourcesAPI;
 
 public class CommandsHandler implements CommandExecutor {
 	
+	private XKits plugin;
 	private ArenaManager arenaManager;
 	private ResourcesAPI rApi;
 	private FighterKit fighterKit;
 	
 	public CommandsHandler(XKits plugin) {
+		this.plugin = plugin;
 		this.arenaManager = new ArenaManager(plugin);
 		this.rApi = new ResourcesAPI(plugin);
 		this.fighterKit = new FighterKit(plugin);
@@ -52,7 +53,10 @@ public class CommandsHandler implements CommandExecutor {
 				 * Then, they will be able to do cmds like /setSpawn
 				 */
 				if (args[0].equalsIgnoreCase("setLobby")) {
-					checkPerm(player, "XKits.Arena.setLobby");
+					if (!checkPerm(player, "XKits.Arena.setLobby")) {
+						rApi.sendColouredMessage(player, "You have insufficient permission.");
+						return true;
+					}
 					
 					String arenaName = args[1];
 					arenaManager.setArenaLobby(player, arenaName);
@@ -61,27 +65,29 @@ public class CommandsHandler implements CommandExecutor {
 				if (args[0].equalsIgnoreCase("join")) {
 					String arenaName = args[1];
 					if (!arenaManager.checkArenaInFile(player, arenaName)) {
-						rApi.sendColouredMessage(player, "&c(!) Unable to find Arena with the name of &e'" + arenaName + "'&c.");
+						rApi.sendColouredMessage(player, "&c(!) Unable to find Arena with the name of &e" + arenaName + "&c.");
 						rApi.sendColouredMessage(player, "&c(!) Please input a valid Arena name.");
 						return true;
 					}
-					if (ArenaListener.playersInArena.contains(player.getName())) {
-						player.sendMessage("You are already in the KitPVP Arena!");
-						return true;
+					if (plugin.getPlayersInArenaMap().containsKey(player.getName())) {
+						rApi.sendColouredMessage(player, "&c(!) You are already in a KitPVP Arena.");
+						rApi.sendColouredMessage(player, "&6(!) Current Arena: &9" + plugin.getPlayersInArenaMap().get(player.getName()));
 					} else {
+						plugin.getPlayersInArenaMap().put(player.getName(), arenaName);
+						rApi.sendColouredMessage(player, "&a(!) You have joined KitPVP Arena &9" + arenaName + "&a.");
 						arenaManager.teleportToArenaLobby(player, arenaName);
-						ArenaListener.playersInArena.add(player.getName());
-						player.sendMessage("You have joined the KitPVP Arena!");
 					}
+					
 				}
 				
 				if (args[0].equalsIgnoreCase("kits")) {
 					if (args[1].equalsIgnoreCase("fighter")) {
-						if (!ArenaListener.playersInArena.contains(player.getName())) {
-							rApi.sendColouredMessage(player, "You need to join the KitPVP Arena.");
+						if (!plugin.getPlayersInArenaMap().containsKey(player.getName())) {
+							rApi.sendColouredMessage(player, "&c(!) You need to join the KitPVP Arena first!");
 							return true;
+						} else {
+							fighterKit.setKit(player);
 						}
-						fighterKit.setKit(player);
 					}
 				}
 			}
@@ -91,9 +97,9 @@ public class CommandsHandler implements CommandExecutor {
 	
 	private boolean checkPerm(Player player, String perm) {
 		if (!player.hasPermission(perm)) {
-			return true;
-		} else {
 			return false;
+		} else {
+			return true;
 		}
 	}
 

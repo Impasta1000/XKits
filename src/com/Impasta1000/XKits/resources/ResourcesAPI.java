@@ -34,7 +34,7 @@ public class ResourcesAPI {
 		helpMenu.add("  &f/xkits join &6<arenaName> &e- Join KitPVP Arena.");
 		helpMenu.add(" ");
 		helpMenu.add("  &9Admin Help");
-		helpMenu.add("	&f/xkits setLobby <arenaName> &e- Set lobby for KitPVP Arena.");
+		helpMenu.add("	&f/xkits setLobby &6<arenaName> &e- Set lobby for KitPVP Arena.");
 		helpMenu.add("&8*---------------------------------------------------*");
 		for (String msgToSend : helpMenu) {
 			sendColouredMessage(player, msgToSend);

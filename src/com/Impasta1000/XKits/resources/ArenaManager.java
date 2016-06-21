@@ -7,7 +7,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import com.Impasta1000.XKits.XKits;
-import com.Impasta1000.XKits.listeners.ArenaListener;
 import com.Impasta1000.XKits.resources.ConfigManager.ConfigFile;
 
 public class ArenaManager {
@@ -20,8 +19,10 @@ public class ArenaManager {
 	
 	private ConfigManager configManager;
 	private ResourcesAPI rApi;
+	private XKits plugin;
 	
 	public ArenaManager(XKits plugin) {
+		this.plugin = plugin;
 		this.configManager = new ConfigManager(plugin);
 		this.rApi = new ResourcesAPI(plugin);
 	}
@@ -50,8 +51,8 @@ public class ArenaManager {
 		}
 		
 		//TODO Add overwritten message
-		rApi.sendColouredMessage(player, " &2(!) Spawn has been set for &9" + arenaName);
-		rApi.sendColouredMessage(player, " &2(!) The co-ordinates are: &3" + x + ", " + y + ", " + z);
+		rApi.sendColouredMessage(player, " &6(!) Spawn has been set for &9" + arenaName);
+		rApi.sendColouredMessage(player, " &6(!) The co-ordinates are: &c" + x + ", " + y + ", " + z);
 	}
 	
 	public void teleportToArenaLobby(Player player, String arenaName) {
@@ -93,7 +94,7 @@ public class ArenaManager {
 	}
 	
 	public boolean checkPlayerInArena(Player player) {
-		if (ArenaListener.playersInArena.contains(player.getName())) {
+		if (plugin.getPlayersInArenaMap().containsKey(player.getName())) {
 			return true;
 		} else {
 			return false;

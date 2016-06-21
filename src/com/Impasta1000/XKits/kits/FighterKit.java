@@ -55,7 +55,6 @@ public class FighterKit extends Kit {
 		player.getInventory().setArmorContents(armorContents);
 		player.updateInventory();
 		rApi.buffArmor(player, Enchantment.PROTECTION_ENVIRONMENTAL, 1);
-		player.sendMessage("Test");
 		player.updateInventory();
 	}
 	
