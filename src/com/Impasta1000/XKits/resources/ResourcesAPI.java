@@ -32,9 +32,13 @@ public class ResourcesAPI {
 		helpMenu.add("  &9Player Help");
 		helpMenu.add("  &f/xkits help &e- Shows help.");
 		helpMenu.add("  &f/xkits join &6<arenaName> &e- Join KitPVP Arena.");
+		helpMenu.add("  &f/xkits kits &e- Open Kits GUI.");
+		helpMenu.add("  &f/xkits spawn &e- Teleport to Arena spawn.");
+		helpMenu.add("  &f/xkits arenas &e- List arenas.");
 		helpMenu.add(" ");
 		helpMenu.add("  &9Admin Help");
-		helpMenu.add("	&f/xkits setLobby &6<arenaName> &e- Set lobby for KitPVP Arena.");
+		helpMenu.add("	&f/xkits setLobby &6<arenaName> &e- Set lobby/spawn for Arena.");
+		helpMenu.add("  &f/xkits deleteLobby &6<arenaName> &e - Delete lobby/spawn for Arena");
 		helpMenu.add("&8*---------------------------------------------------*");
 		for (String msgToSend : helpMenu) {
 			sendColouredMessage(player, msgToSend);

@@ -45,6 +45,15 @@ public class CommandsHandler implements CommandExecutor {
 					rApi.printHelpMenu(player);
 				}
 				
+				if (args[0].equalsIgnoreCase("spawn")) {
+					if (!plugin.getPlayersInArenaMap().containsKey(player.getName())) {
+						rApi.sendColouredMessage(player, "&c(!) You are not in a KitPVP Arena.");
+					} else {
+						String arenaName = plugin.getPlayersInArenaMap().get(player.getName());
+						arenaManager.teleportToArenaLobby(player, arenaName);
+					}
+				}
+				
 				if (args[0].equalsIgnoreCase("kits")) {
 					kitGui.openKitGUI(player);
 				}
@@ -57,6 +66,14 @@ public class CommandsHandler implements CommandExecutor {
 						plugin.getPlayersInArenaMap().remove(player.getName());
 					}
 				}
+				
+				if (args[0].equalsIgnoreCase("arenas")) {
+					if (!checkPerm(player, "XKits.Arena.List")) {
+						rApi.sendColouredMessage(player, "&c(!) You have insufficient permission.");
+						return true;
+					}
+					arenaManager.listArenaLobbies(player);
+				}
 			}
 			
 			if (args.length == 2) {
@@ -66,8 +83,8 @@ public class CommandsHandler implements CommandExecutor {
 				 * Then, they will be able to do cmds like /setSpawn
 				 */
 				if (args[0].equalsIgnoreCase("setLobby")) {
-					if (!checkPerm(player, "XKits.Arena.setLobby")) {
-						rApi.sendColouredMessage(player, "You have insufficient permission.");
+					if (!checkPerm(player, "XKits.Arena.SetLobby")) {
+						rApi.sendColouredMessage(player, "&c(!) You have insufficient permission.");
 						return true;
 					}
 					
@@ -78,8 +95,7 @@ public class CommandsHandler implements CommandExecutor {
 				if (args[0].equalsIgnoreCase("join")) {
 					String arenaName = args[1];
 					if (!arenaManager.checkArenaInFile(player, arenaName)) {
-						rApi.sendColouredMessage(player, "&c(!) Unable to find Arena with the name of &9" + arenaName + "&c.");
-						rApi.sendColouredMessage(player, "&c(!) Please input a valid Arena name.");
+						
 						return true;
 					}
 					if (plugin.getPlayersInArenaMap().containsKey(player.getName())) {
@@ -90,6 +106,20 @@ public class CommandsHandler implements CommandExecutor {
 						rApi.sendColouredMessage(player, "&6(!) You have &ajoined &6KitPVP Arena &9" + arenaName + "&6.");
 						arenaManager.teleportToArenaLobby(player, arenaName);
 					}
+				}
+				
+				if (args[0].equalsIgnoreCase("deletelobby")) {
+					
+					if (!checkPerm(player, "XKits.Arena.DeleteLobby")) {
+						rApi.sendColouredMessage(player, "&c(!) You have insufficient permission.");
+						return true;
+					}
+					
+					String arenaName = args[1];
+					if (!arenaManager.checkArenaInFile(player, arenaName)) {
+						return true;
+					}
+					arenaManager.deleteArenaLobby(player, arenaName);
 				}
 			}
 		}

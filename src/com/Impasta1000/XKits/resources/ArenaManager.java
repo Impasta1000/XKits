@@ -3,6 +3,7 @@ package com.Impasta1000.XKits.resources;
 import java.io.IOException;
 
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -55,6 +56,49 @@ public class ArenaManager {
 		rApi.sendColouredMessage(player, " &6(!) The co-ordinates are: &c" + x + ", " + y + ", " + z);
 	}
 	
+	public void listArenaLobbies(Player player) {
+		
+		String worldName = player.getWorld().getName();
+		
+		configManager.loadConfig(ConfigFile.ARENAS);
+		FileConfiguration arenaConfig = configManager.getConfig(ConfigFile.ARENAS);
+		ConfigurationSection section = arenaConfig.getConfigurationSection(worldName);
+		
+		if (section.getKeys(false).isEmpty()) {
+			rApi.sendColouredMessage(player, "&c(!) There are no KitPVP Arenas.");
+			return;
+		}
+		
+		int counter = 1;
+		for (String spawns : section.getKeys(false)) {
+			rApi.sendColouredMessage(player, "&6" + counter + ". " + spawns);
+			counter++;
+		}
+	}
+	
+	public void deleteArenaLobby(Player player, String arenaName) {
+		
+		//TODO Add permission check
+		String worldName = player.getWorld().getName();
+		
+		configManager.loadConfig(ConfigFile.ARENAS);
+		FileConfiguration arenaConfig = configManager.getConfig(ConfigFile.ARENAS);
+		
+		if (!checkArenaInFile(player, arenaName)) {
+			rApi.sendColouredMessage(player, "&c(!) Unable to find  KitPVP Arena &e" + arenaName + "&c.");
+		} else {
+			arenaConfig.set(worldName + "." + arenaName, null);
+			rApi.sendColouredMessage(player, "&6(!) Successfully &cdeleted &6KitPVP Arena &9" + arenaName + "&6.");
+		}
+		
+		try {
+			arenaConfig.save(configManager.getConfigFile(ConfigFile.ARENAS));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+ 	
 	public void teleportToArenaLobby(Player player, String arenaName) {
 		String worldName = player.getWorld().getName();
 		
@@ -75,7 +119,7 @@ public class ArenaManager {
 		
 		Location arenaLobby = new Location(player.getWorld(), x, y, z, yaw, pitch);
 		player.teleport(arenaLobby);
-		player.sendMessage("You have been teleported to " + arenaName + ".");
+		rApi.sendColouredMessage(player, "&6(!) You have been &asuccessfully &6teleported to &9" + arenaName + " &6spawn.");
 	}
 	
 	public boolean checkArenaInFile(Player player, String arenaName) {
@@ -86,6 +130,8 @@ public class ArenaManager {
 		FileConfiguration arenaConfig = configManager.getConfig(ConfigFile.ARENAS);
 		
 		if (!arenaConfig.contains(worldName + "." + arenaName)) {
+			rApi.sendColouredMessage(player, "&c(!) Unable to find Arena with the name of &e" + arenaName + "&c.");
+			rApi.sendColouredMessage(player, "&c(!) Please input a valid Arena name.");
 			return false;
 		} else {
 			return true;

@@ -9,14 +9,11 @@ import org.bukkit.inventory.ItemStack;
 import com.Impasta1000.XKits.XKits;
 import com.Impasta1000.XKits.resources.ResourcesAPI;
 
-public class FighterKit extends Kit {
+public class FighterKit implements Kit {
 
-	@SuppressWarnings("unused")
-	private XKits plugin;
 	private ResourcesAPI rApi;
 
 	public FighterKit(XKits plugin) {
-		this.plugin = plugin;
 		this.rApi = new ResourcesAPI(plugin);
 	}
 
