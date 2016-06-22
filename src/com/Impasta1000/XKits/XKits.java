@@ -2,9 +2,12 @@ package com.Impasta1000.XKits;
 
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.Impasta1000.XKits.listeners.KitsGUIListener;
 import com.Impasta1000.XKits.resources.ConfigManager;
 import com.Impasta1000.XKits.resources.ConfigManager.ConfigFile;
 
@@ -29,6 +32,7 @@ public class XKits extends JavaPlugin {
 		
 		loadConfigs();
 		registerCommands();
+		registerEvents();
 	}
 	
 	public void onDisable() { 
@@ -46,6 +50,12 @@ public class XKits extends JavaPlugin {
 	
 	private void registerCommands() {
 		getCommand("xkits").setExecutor(commandsHandler);
+	}
+	
+	private void registerEvents() {
+		PluginManager PM = Bukkit.getPluginManager();
+		
+		PM.registerEvents(new KitsGUIListener(this), this);
 	}
 
 }

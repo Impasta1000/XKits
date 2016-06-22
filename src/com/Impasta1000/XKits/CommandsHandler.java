@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.Impasta1000.XKits.kits.FighterKit;
+import com.Impasta1000.XKits.kits.KitGUI;
 import com.Impasta1000.XKits.resources.ArenaManager;
 import com.Impasta1000.XKits.resources.ResourcesAPI;
 
@@ -14,13 +14,13 @@ public class CommandsHandler implements CommandExecutor {
 	private XKits plugin;
 	private ArenaManager arenaManager;
 	private ResourcesAPI rApi;
-	private FighterKit fighterKit;
+	private KitGUI kitGui;
 	
 	public CommandsHandler(XKits plugin) {
 		this.plugin = plugin;
 		this.arenaManager = new ArenaManager(plugin);
 		this.rApi = new ResourcesAPI(plugin);
-		this.fighterKit = new FighterKit(plugin);
+		this.kitGui = new KitGUI(plugin);
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -44,6 +44,19 @@ public class CommandsHandler implements CommandExecutor {
 				if (args[0].equalsIgnoreCase("help")) {
 					rApi.printHelpMenu(player);
 				}
+				
+				if (args[0].equalsIgnoreCase("kits")) {
+					kitGui.openKitGUI(player);
+				}
+				
+				if (args[0].equalsIgnoreCase("leave")) {
+					if (!plugin.getPlayersInArenaMap().containsKey(player.getName())) {
+						rApi.sendColouredMessage(player, "&c(!) You are not in a KitPVP Arena.");
+					} else {
+						rApi.sendColouredMessage(player, "&6(!) You have &cleft &6KitPVP Arena &9" + plugin.getPlayersInArenaMap().get(player.getName()) + "&6.");
+						plugin.getPlayersInArenaMap().remove(player.getName());
+					}
+				}
 			}
 			
 			if (args.length == 2) {
@@ -65,7 +78,7 @@ public class CommandsHandler implements CommandExecutor {
 				if (args[0].equalsIgnoreCase("join")) {
 					String arenaName = args[1];
 					if (!arenaManager.checkArenaInFile(player, arenaName)) {
-						rApi.sendColouredMessage(player, "&c(!) Unable to find Arena with the name of &e" + arenaName + "&c.");
+						rApi.sendColouredMessage(player, "&c(!) Unable to find Arena with the name of &9" + arenaName + "&c.");
 						rApi.sendColouredMessage(player, "&c(!) Please input a valid Arena name.");
 						return true;
 					}
@@ -74,20 +87,8 @@ public class CommandsHandler implements CommandExecutor {
 						rApi.sendColouredMessage(player, "&6(!) Current Arena: &9" + plugin.getPlayersInArenaMap().get(player.getName()));
 					} else {
 						plugin.getPlayersInArenaMap().put(player.getName(), arenaName);
-						rApi.sendColouredMessage(player, "&a(!) You have joined KitPVP Arena &9" + arenaName + "&a.");
+						rApi.sendColouredMessage(player, "&6(!) You have &ajoined &6KitPVP Arena &9" + arenaName + "&6.");
 						arenaManager.teleportToArenaLobby(player, arenaName);
-					}
-					
-				}
-				
-				if (args[0].equalsIgnoreCase("kits")) {
-					if (args[1].equalsIgnoreCase("fighter")) {
-						if (!plugin.getPlayersInArenaMap().containsKey(player.getName())) {
-							rApi.sendColouredMessage(player, "&c(!) You need to join the KitPVP Arena first!");
-							return true;
-						} else {
-							fighterKit.setKit(player);
-						}
 					}
 				}
 			}

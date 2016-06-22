@@ -41,15 +41,15 @@ public class ResourcesAPI {
 		}
 	}
 	
-	public ItemStack createNewItem(Material material, int amount, String displayName, String...lore) {
+	public ItemStack createNewItem(Material material, int amount, String colouredDisplayName, String...colouredLore) {
 		
 		ItemStack item = new ItemStack(material);
 		item.setAmount(amount);
 		ItemMeta itemMeta = item.getItemMeta();
 		
-		itemMeta.setDisplayName(colourize(displayName));
+		itemMeta.setDisplayName(colourize(colouredDisplayName));
 		List<String> loreList = new ArrayList<String>();
-		for (String x : lore) {
+		for (String x : colouredLore) {
 			loreList.add(colourize(x));
 		}
 		itemMeta.setLore(loreList);

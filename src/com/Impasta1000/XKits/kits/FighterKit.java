@@ -37,10 +37,10 @@ public class FighterKit extends Kit {
 	@Override
 	public ItemStack[] getArmorContents() {
 		armorContents = new ItemStack[] {
-			rApi.createNewItem(Material.IRON_HELMET, 1, rApi.colourize("&c[Fighter] Helmet"), rApi.colourize("&eKit: " + kitName)),
-			rApi.createNewItem(Material.IRON_CHESTPLATE, 1, rApi.colourize("&c[Fighter] Chestplate"), rApi.colourize("&eKit: " + kitName)),
-			rApi.createNewItem(Material.IRON_LEGGINGS, 1, rApi.colourize("&c[Fighter] Leggings"), rApi.colourize("&eKit: " + kitName)),
-			rApi.createNewItem(Material.IRON_BOOTS, 1, rApi.colourize("&c[Fighter] Boots"), rApi.colourize("&eKit: " + kitName)) };
+			rApi.createNewItem(Material.IRON_HELMET, 1, "&c[Fighter] Helmet", "&eKit: " + kitName),
+			rApi.createNewItem(Material.IRON_CHESTPLATE, 1, "&c[Fighter] Chestplate", "&eKit: " + kitName),
+			rApi.createNewItem(Material.IRON_LEGGINGS, 1, "&c[Fighter] Leggings", "&eKit: " + kitName),
+			rApi.createNewItem(Material.IRON_BOOTS, 1, "&c[Fighter] Boots", "&eKit: " + kitName) };
 		return armorContents;
 	}
 
@@ -48,10 +48,10 @@ public class FighterKit extends Kit {
 	public void setArmorContents(Player player) {
 		player.getInventory().setArmorContents(null);
 		armorContents = new ItemStack[] {
-				rApi.createNewItem(Material.IRON_BOOTS, 1, rApi.colourize("&c[Fighter] Boots"), rApi.colourize("&eKit: " + kitName)),
-				rApi.createNewItem(Material.IRON_LEGGINGS, 1, rApi.colourize("&c[Fighter] Leggings"), rApi.colourize("&eKit: " + kitName)),
-				rApi.createNewItem(Material.IRON_CHESTPLATE, 1, rApi.colourize("&c[Fighter] Chestplate"), rApi.colourize("&eKit: " + kitName)),
-				rApi.createNewItem(Material.IRON_HELMET, 1, rApi.colourize("&c[Fighter] Helmet"), rApi.colourize("&eKit: " + kitName)) };
+				rApi.createNewItem(Material.IRON_BOOTS, 1, "&c[Fighter] Boots", "&eKit: " + kitName),
+				rApi.createNewItem(Material.IRON_LEGGINGS, 1, "&c[Fighter] Leggings", "&eKit: " + kitName),
+				rApi.createNewItem(Material.IRON_CHESTPLATE, 1, "&c[Fighter] Chestplate", "&eKit: " + kitName),
+				rApi.createNewItem(Material.IRON_HELMET, 1, "&c[Fighter] Helmet", "&eKit: " + kitName) };
 		player.getInventory().setArmorContents(armorContents);
 		player.updateInventory();
 		rApi.buffArmor(player, Enchantment.PROTECTION_ENVIRONMENTAL, 1);
