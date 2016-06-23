@@ -8,7 +8,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import com.Impasta1000.XKits.XKits;
-import com.Impasta1000.XKits.resources.ConfigManager.ConfigFile;
+import com.Impasta1000.XKits.config.ConfigManager;
+import com.Impasta1000.XKits.config.ConfigManager.ConfigFile;
 
 public class ArenaManager {
 	

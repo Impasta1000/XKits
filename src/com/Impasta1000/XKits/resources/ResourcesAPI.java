@@ -9,18 +9,19 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
 
 import com.Impasta1000.XKits.XKits;
 
 public class ResourcesAPI {
-	
+
 	private XKits plugin;
-	
+
 	public ResourcesAPI(XKits plugin) {
 		this.plugin = plugin;
 	}
-	
-	//Help menu
+
+	// Help menu
 	public void printHelpMenu(Player player) {
 		List<String> helpMenu = new ArrayList<String>();
 		helpMenu.add("&8*---------------------------------------------------*");
@@ -44,13 +45,14 @@ public class ResourcesAPI {
 			sendColouredMessage(player, msgToSend);
 		}
 	}
-	
-	public ItemStack createNewItem(Material material, int amount, String colouredDisplayName, String...colouredLore) {
-		
+
+	public ItemStack createCustomItem(Material material, int amount, String colouredDisplayName,
+			String... colouredLore) {
+
 		ItemStack item = new ItemStack(material);
 		item.setAmount(amount);
 		ItemMeta itemMeta = item.getItemMeta();
-		
+
 		itemMeta.setDisplayName(colourize(colouredDisplayName));
 		List<String> loreList = new ArrayList<String>();
 		for (String x : colouredLore) {
@@ -58,17 +60,17 @@ public class ResourcesAPI {
 		}
 		itemMeta.setLore(loreList);
 		item.setItemMeta(itemMeta);
-		
+
 		return item;
 	}
-	
+
 	public ItemStack createItem(Material material, int amount) {
 		ItemStack item = new ItemStack(material);
 		item.setAmount(amount);
 		return item;
 	}
-	
-	public ItemStack addItemMeta(ItemStack stack, String displayName, String...lore) {
+
+	public ItemStack addItemMeta(ItemStack stack, String displayName, String... lore) {
 		ItemMeta itemMeta = stack.getItemMeta();
 		itemMeta.setDisplayName(colourize(displayName));
 		List<String> loreList = new ArrayList<String>();
@@ -79,39 +81,45 @@ public class ResourcesAPI {
 		stack.setItemMeta(itemMeta);
 		return stack;
 	}
-	
+
 	public void sendColouredMessage(Player player, String msg) {
 		player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
 	}
-	
+
 	public String colourize(String string) {
 		return ChatColor.translateAlternateColorCodes('&', string);
 	}
-	
+
 	public void clearInventory(Player player) {
 		player.getInventory().clear();
 		player.getInventory().setArmorContents(null);
 		sendColouredMessage(player, "Your inventory has been cleared.");
 	}
-	
+
 	public void buffArmor(Player player, Enchantment ench, int level) {
 		ItemStack playerHelmet = player.getInventory().getHelmet();
 		playerHelmet.addEnchantment(ench, level);
 		player.getInventory().setHelmet(playerHelmet);
-		
+
 		ItemStack playerChestplate = player.getInventory().getChestplate();
 		playerChestplate.addEnchantment(ench, level);
 		player.getInventory().setChestplate(playerChestplate);
-		
+
 		ItemStack playerLeggings = player.getInventory().getLeggings();
 		playerLeggings.addEnchantment(ench, level);
 		player.getInventory().setLeggings(playerLeggings);
-		
+
 		ItemStack playerBoots = player.getInventory().getBoots();
 		playerBoots.addEnchantment(ench, level);
 		player.getInventory().setBoots(playerBoots);
-		
+
 		player.updateInventory();
+	}
+
+	public void removeAllPotionEffects(Player player) {
+		for (PotionEffect effect : player.getActivePotionEffects()) {
+			player.removePotionEffect(effect.getType());
+		}
 	}
 
 }

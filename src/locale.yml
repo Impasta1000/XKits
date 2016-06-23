@@ -1,5 +1,12 @@
 ############################################
 #                                          #
-#               XKits Config               #
+#                  Locale                  #
 #                                          #
 ############################################
+
+# You can choose where to display this with "%prefix%"
+Prefix: ""
+
+Messages:
+    
+    no-permission: ""

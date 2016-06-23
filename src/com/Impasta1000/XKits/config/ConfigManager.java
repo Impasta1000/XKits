@@ -1,4 +1,4 @@
-package com.Impasta1000.XKits.resources;
+package com.Impasta1000.XKits.config;
 
 import java.io.File;
 import java.io.FileNotFoundException;
