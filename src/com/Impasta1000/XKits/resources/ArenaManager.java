@@ -65,6 +65,11 @@ public class ArenaManager {
 		FileConfiguration arenaConfig = configManager.getConfig(ConfigFile.ARENAS);
 		ConfigurationSection section = arenaConfig.getConfigurationSection(worldName);
 		
+		if (section == null) {
+			rApi.sendColouredMessage(player, "&c(!) There are no KitPVP Arenas.");
+			return;
+		}
+		
 		if (section.getKeys(false).isEmpty()) {
 			rApi.sendColouredMessage(player, "&c(!) There are no KitPVP Arenas.");
 			return;

@@ -44,10 +44,10 @@ public class FighterKit implements Kit {
 	public void setArmorContents(Player player) {
 		player.getInventory().setArmorContents(null);
 		ItemStack[] armorContents = new ItemStack[] {
-				rApi.createCustomItem(Material.IRON_BOOTS, 1, getKitName() + " Boots", "&eKit: " + getKitName()),
-				rApi.createCustomItem(Material.IRON_LEGGINGS, 1, getKitName() + " Leggings", "&eKit: " +  getKitName()),
-				rApi.createCustomItem(Material.IRON_CHESTPLATE, 1, getKitName() + " Chestplate", "&eKit: " + getKitName()),
-				rApi.createCustomItem(Material.IRON_HELMET, 1, getKitName() + " Helmet", "&eKit: " + getKitName()) };
+				rApi.createCustomItem(Material.IRON_BOOTS, 1, "&c[Fighter] Boots", "&eKit: " + getKitName()),
+				rApi.createCustomItem(Material.IRON_LEGGINGS, 1, "&c[Fighter] Leggings", "&eKit: " +  getKitName()),
+				rApi.createCustomItem(Material.IRON_CHESTPLATE, 1, "&c[Fighter] Chestplate", "&eKit: " + getKitName()),
+				rApi.createCustomItem(Material.IRON_HELMET, 1, "&c[Fighter] Helmet", "&eKit: " + getKitName()) };
 		player.getInventory().setArmorContents(armorContents);
 		player.updateInventory();
 		rApi.buffArmor(player, Enchantment.PROTECTION_ENVIRONMENTAL, 1);
@@ -57,8 +57,8 @@ public class FighterKit implements Kit {
 	public void setInventoryContents(Player player) {
 		Inventory playerInv = player.getInventory();
 		ItemStack[] inventoryContents = new ItemStack[] { 
-				rApi.createCustomItem(Material.STONE_SWORD, 1, getKitName() + " Sword","&eKit: " + getKitName()),
-				rApi.createCustomItem(Material.COOKED_BEEF, 12, getKitName() + " Steak", "&eKit: " + getKitName()) };
+				rApi.createCustomItem(Material.STONE_SWORD, 1, "&c[Fighter] Sword","&eKit: " + getKitName()),
+				rApi.createCustomItem(Material.COOKED_BEEF, 12, "&c[Fighter] Steak", "&eKit: " + getKitName()) };
 		playerInv.setContents(inventoryContents);
 	}
 	
@@ -74,7 +74,7 @@ public class FighterKit implements Kit {
 		setInventoryContents(player);
 		setArmorContents(player);
 		setPotionEffect(player);
-		rApi.sendColouredMessage(player, "&6(!) You have received the " + getKitName() + "&6kit.");
+		rApi.sendColouredMessage(player, "&6(!) You have received the " + getKitName() + " &6kit.");
 	}
 
 }

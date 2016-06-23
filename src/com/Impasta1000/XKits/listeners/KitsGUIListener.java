@@ -23,8 +23,8 @@ public class KitsGUIListener implements Listener {
 	public KitsGUIListener(XKits plugin) {
 		this.plugin = plugin;
 		this.rApi = new ResourcesAPI(plugin);
-		this.fighterKit = new FighterKit(plugin);
-		this.rangerKit = new RangerKit(plugin);
+		this.fighterKit = new FighterKit("&cFighter", 1);
+		this.rangerKit = new RangerKit("&fRanger", 2);
 	}
 
 	@EventHandler
@@ -32,40 +32,43 @@ public class KitsGUIListener implements Listener {
 		Player player = (Player) event.getWhoClicked();
 		Inventory clickedInv = event.getClickedInventory();
 		ItemStack clickedItem = event.getCurrentItem();
-
-		if (!clickedInv.getName().equals(rApi.colourize("&eKits")) || clickedItem == null) {
+		
+		if (clickedItem == null) {
 			return;
 		}
+		
+		if (clickedInv.getName().equals(rApi.colourize("&eKits"))) {
 
-		if (clickedItem.hasItemMeta()) {
+			if (clickedItem.hasItemMeta()) {
 
-			if (clickedItem.getItemMeta().hasDisplayName() && clickedItem.getItemMeta().hasLore()) {
+				if (clickedItem.getItemMeta().hasDisplayName() && clickedItem.getItemMeta().hasLore()) {
 
-				String name = clickedItem.getItemMeta().getDisplayName();
+					String name = clickedItem.getItemMeta().getDisplayName();
 
-				if (name.equals(rApi.colourize("&cFighter")) && clickedItem.getType() == Material.SHIELD) {
+					if (name.equals(rApi.colourize("&cFighter")) && clickedItem.getType() == Material.IRON_SWORD) {
 
-					event.setCancelled(true);
-					player.closeInventory();
+						event.setCancelled(true);
+						player.closeInventory();
 
-					if (!plugin.getPlayersInArenaMap().containsKey(player.getName())) {
-						rApi.sendColouredMessage(player, "&c(!) You need to join the KitPVP Arena first!");
-						return;
-					} else {
-						fighterKit.setKit(player);
+						if (!plugin.getPlayersInArenaMap().containsKey(player.getName())) {
+							rApi.sendColouredMessage(player, "&c(!) You need to join the KitPVP Arena first!");
+							return;
+						} else {
+							fighterKit.setKit(player);
+						}
 					}
-				}
 
-				if (name.equals(rApi.colourize("&fRanger")) && clickedItem.getType() == Material.BOW) {
+					if (name.equals(rApi.colourize("&fRanger")) && clickedItem.getType() == Material.BOW) {
 
-					event.setCancelled(true);
-					player.closeInventory();
+						event.setCancelled(true);
+						player.closeInventory();
 
-					if (!plugin.getPlayersInArenaMap().containsKey(player.getName())) {
-						rApi.sendColouredMessage(player, "&c(!) You need to join the KitPVP Arena first!");
-						return;
-					} else {
-						rangerKit.setKit(player);
+						if (!plugin.getPlayersInArenaMap().containsKey(player.getName())) {
+							rApi.sendColouredMessage(player, "&c(!) You need to join the KitPVP Arena first!");
+							return;
+						} else {
+							rangerKit.setKit(player);
+						}
 					}
 				}
 			}
