@@ -1,0 +1,6 @@
+{
+  "name": "XKits",
+  "tagline": "A soon to be advanced KitPVP Plugin",
+  "body": "## XKits Documentation\r\n\r\nHere, you will find all the information you will need for XKits. I have designed this to be easy to find what you need quickly without having to read much, however if you need the extra information, it's here just in case. Shall we get started?\r\n\r\n## What is XKits?\r\n\r\nXKits is basically a KitPVP plugin. It is designed for servers which encompass the PVP Game Mode, adding a twist to the game and adding kits with special abilities (in future implementations)\r\n\r\nXKits also offers its own kit creation feature, where players/server admins can create their own kits to use.\r\n\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
