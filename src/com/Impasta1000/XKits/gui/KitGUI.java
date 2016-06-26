@@ -1,4 +1,4 @@
-package com.Impasta1000.XKits.kits;
+package com.Impasta1000.XKits.gui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import com.Impasta1000.XKits.XKits;
 import com.Impasta1000.XKits.resources.ResourcesAPI;
 
-public class KitsGUI {
+public class KitGUI {
 	
 	/*
 	 * Manages the GUI when players type /xkits kits
@@ -17,7 +17,7 @@ public class KitsGUI {
 	
 	private ResourcesAPI rApi;
 	
-	public KitsGUI(XKits plugin) {
+	public KitGUI(XKits plugin) {
 		this.rApi = new ResourcesAPI(plugin);
 	}
 	

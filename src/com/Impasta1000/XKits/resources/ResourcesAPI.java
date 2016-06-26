@@ -30,19 +30,27 @@ public class ResourcesAPI {
 		helpMenu.add("  &2[] &f= optional arguments");
 		helpMenu.add("  &6<> &f= required arguments");
 		helpMenu.add(" ");
-		helpMenu.add("  &9Player Help");
+		helpMenu.add("  &9&nPlayer Help");
 		helpMenu.add("  &f/xkits help &e- Shows help.");
 		helpMenu.add("  &f/xkits join &6<arenaName> &e- Join KitPVP Arena.");
+		helpMenu.add("  &f/xkits arena &e- Arena GUI.");
 		helpMenu.add("  &f/xkits kits &e- Open Kits GUI.");
 		helpMenu.add("  &f/xkits spawn &e- Teleport to Arena spawn.");
-		helpMenu.add("  &f/xkits arenas &e- List arenas.");
 		helpMenu.add(" ");
-		helpMenu.add("  &9Admin Help");
+		helpMenu.add("  &9&nAdmin Help");
 		helpMenu.add("	&f/xkits setLobby &6<arenaName> &e- Set lobby/spawn for Arena.");
 		helpMenu.add("  &f/xkits deleteLobby &6<arenaName> &e - Delete lobby/spawn for Arena");
 		helpMenu.add("&8*---------------------------------------------------*");
 		for (String msgToSend : helpMenu) {
 			sendColouredMessage(player, msgToSend);
+		}
+	}
+	
+	public boolean checkPerm(Player player, String perm) {
+		if (!player.hasPermission(perm)) {
+			return false;
+		} else {
+			return true;
 		}
 	}
 

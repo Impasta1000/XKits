@@ -4,12 +4,14 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.Impasta1000.XKits.config.ConfigManager;
 import com.Impasta1000.XKits.config.ConfigManager.ConfigFile;
 import com.Impasta1000.XKits.config.LocaleManager;
+import com.Impasta1000.XKits.listeners.ArenaGUIListener;
 import com.Impasta1000.XKits.listeners.KitsGUIListener;
 
 public class XKits extends JavaPlugin {
@@ -27,9 +29,20 @@ public class XKits extends JavaPlugin {
 	 */
 
 	private HashMap<String, String> playersInArena = new HashMap<String, String>();
+	
+	/*
+	 * HashMap to store player inventories when they join KitPVP Arena
+	 * 
+	 * @param playerUUID, itemStack[]
+	 */
+	private HashMap<String, ItemStack[]> playerInventories = new HashMap<String, ItemStack[]>();
 
 	public HashMap<String, String> getPlayersInArenaMap() {
 		return playersInArena;
+	}
+	
+	public HashMap<String, ItemStack[]> getPlayerInventories() {
+		return playerInventories;
 	}
 	
 	private HashMap<String, String> messages = new HashMap<String, String>();
@@ -77,6 +90,7 @@ public class XKits extends JavaPlugin {
 	private void registerEvents() {
 		PluginManager PM = Bukkit.getPluginManager();
 		PM.registerEvents(new KitsGUIListener(this), this);
+		PM.registerEvents(new ArenaGUIListener(this), this);
 	}
 
 }

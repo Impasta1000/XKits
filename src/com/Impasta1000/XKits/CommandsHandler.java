@@ -5,22 +5,28 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.Impasta1000.XKits.kits.KitsGUI;
+import com.Impasta1000.XKits.gui.ArenaGUI;
+import com.Impasta1000.XKits.gui.KitGUI;
 import com.Impasta1000.XKits.resources.ArenaManager;
+import com.Impasta1000.XKits.resources.PlayerManager;
 import com.Impasta1000.XKits.resources.ResourcesAPI;
 
 public class CommandsHandler implements CommandExecutor {
 	
 	private XKits plugin;
 	private ArenaManager arenaManager;
+	private PlayerManager playerManager;
 	private ResourcesAPI rApi;
-	private KitsGUI kitGui;
+	private KitGUI kitGui;
+	private ArenaGUI arenaGui;
 	
 	public CommandsHandler(XKits plugin) {
 		this.plugin = plugin;
 		this.arenaManager = new ArenaManager(plugin);
 		this.rApi = new ResourcesAPI(plugin);
-		this.kitGui = new KitsGUI(plugin);
+		this.kitGui = new KitGUI(plugin);
+		this.playerManager = new PlayerManager(plugin);
+		this.arenaGui = new ArenaGUI(plugin);
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -62,18 +68,19 @@ public class CommandsHandler implements CommandExecutor {
 					if (!plugin.getPlayersInArenaMap().containsKey(player.getName())) {
 						rApi.sendColouredMessage(player, "&c(!) You are not in a KitPVP Arena.");
 					} else {
-						rApi.sendColouredMessage(player, "&6(!) You have &cleft &6KitPVP Arena &9" + plugin.getPlayersInArenaMap().get(player.getName()) + "&6.");
+						rApi.sendColouredMessage(player, "&6(!) You have &cleft &6KitPVP &9" + plugin.getPlayersInArenaMap().get(player.getName()) + "&6.");
 						plugin.getPlayersInArenaMap().remove(player.getName());
 						player.getInventory().clear();
+						playerManager.loadInvFromMap(player, plugin.getPlayerInventories());
 					}
 				}
 				
-				if (args[0].equalsIgnoreCase("arenas")) {
-					if (!checkPerm(player, "XKits.Arena.List")) {
-						rApi.sendColouredMessage(player, plugin.getMessages().get("NO-PERMISSION"));
-						return true;
+				if (args[0].equalsIgnoreCase("arena")) {
+					if (!plugin.getPlayersInArenaMap().containsKey(player.getName())) {
+						rApi.sendColouredMessage(player, "&c(!) You need to be in the KitPVP Arena.");
+					} else {
+						arenaGui.openArenaGUI(player);
 					}
-					arenaManager.listArenaLobbies(player);
 				}
 			}
 			
@@ -84,8 +91,8 @@ public class CommandsHandler implements CommandExecutor {
 				 * Then, they will be able to do cmds like /setSpawn
 				 */
 				if (args[0].equalsIgnoreCase("setLobby")) {
-					if (!checkPerm(player, "XKits.Arena.SetLobby")) {
-						rApi.sendColouredMessage(player, "&c(!) You have insufficient permission.");
+					if (!checkPerm(player, "XKits.Arena.Manage")) {
+						rApi.sendColouredMessage(player, plugin.getMessages().get("NO-PERMISSION"));
 						return true;
 					}
 					
@@ -96,7 +103,6 @@ public class CommandsHandler implements CommandExecutor {
 				if (args[0].equalsIgnoreCase("join")) {
 					String arenaName = args[1];
 					if (!arenaManager.checkArenaInFile(player, arenaName)) {
-						
 						return true;
 					}
 					if (plugin.getPlayersInArenaMap().containsKey(player.getName())) {
@@ -107,13 +113,15 @@ public class CommandsHandler implements CommandExecutor {
 						rApi.sendColouredMessage(player, "&6(!) You have &ajoined &6KitPVP Arena &9" + arenaName + "&6.");
 						arenaManager.teleportToArenaLobby(player, arenaName);
 						rApi.removeAllPotionEffects(player);
+						playerManager.saveInvToHashMap(player, plugin.getPlayerInventories());
+						player.getInventory().clear();
 					}
 				}
 				
 				if (args[0].equalsIgnoreCase("deletelobby")) {
 					
-					if (!checkPerm(player, "XKits.Arena.DeleteLobby")) {
-						rApi.sendColouredMessage(player, "&c(!) You have insufficient permission.");
+					if (!checkPerm(player, "XKits.Arena.Manage")) {
+						rApi.sendColouredMessage(player, plugin.getMessages().get("NO-PERMISSION"));
 						return true;
 					}
 					
@@ -123,6 +131,7 @@ public class CommandsHandler implements CommandExecutor {
 					}
 					arenaManager.deleteArenaLobby(player, arenaName);
 				}
+				
 			}
 		}
 		return false;
