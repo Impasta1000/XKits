@@ -1,5 +1,5 @@
 name: XKits
-version: Build#006
+version: Build#007
 author: Impasta1000
 main: com.Impasta1000.XKits.XKits
 description: A KitPVP plugin
@@ -31,4 +31,4 @@ permissions:
         default: false
     XKits.Arena.List:
         description: List all arenas in "arenas.yml"
-        default: true
+        default: false

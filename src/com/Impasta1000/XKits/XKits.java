@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.Impasta1000.XKits.config.ConfigManager;
 import com.Impasta1000.XKits.config.ConfigManager.ConfigFile;
+import com.Impasta1000.XKits.config.LocaleManager;
 import com.Impasta1000.XKits.listeners.KitsGUIListener;
 
 public class XKits extends JavaPlugin {
@@ -30,19 +31,35 @@ public class XKits extends JavaPlugin {
 	public HashMap<String, String> getPlayersInArenaMap() {
 		return playersInArena;
 	}
+	
+	private HashMap<String, String> messages = new HashMap<String, String>();
+	public HashMap<String, String> getMessages() {
+		return messages;
+	}
+	
+	private void loadLocalization() {
+		messages.put("NO-PERMISSION", localeManager.getLocaleMessage("Messages.no-permission"));
+	}
 
 	private ConfigManager configManager;
 	private CommandsHandler commandsHandler;
+	private LocaleManager localeManager;
 
 	public void onEnable() {
 		configManager = new ConfigManager(this);
 		commandsHandler = new CommandsHandler(this);
+		localeManager = new LocaleManager(this);
 
 		plugin = this;
 
 		loadConfigs();
 		registerCommands();
 		registerEvents();
+		
+		FileConfiguration localeConfig = configManager.getConfig(ConfigFile.LOCALE);
+		localeConfig.options().copyDefaults(true);
+		
+		loadLocalization();
 	}
 
 	public void onDisable() {
@@ -51,9 +68,6 @@ public class XKits extends JavaPlugin {
 
 	private void loadConfigs() {
 		configManager.loadConfigs();
-		
-		FileConfiguration config = configManager.getConfig(ConfigFile.CONFIG);
-		config.options().copyDefaults(true);
 	}
 
 	private void registerCommands() {

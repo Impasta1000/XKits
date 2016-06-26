@@ -4,9 +4,11 @@
 #                                          #
 ############################################
 
-# You can choose where to display this with "%prefix%"
-Prefix: ""
+Configuration:
+# Prefix is usually displayed in front of messages
+# Placeholder: %prefix%
+    Prefix: "&c&l(!)"
 
 Messages:
     
-    no-permission: ""
+    no-permission: "%prefix% &cYou have insufficient permission!"

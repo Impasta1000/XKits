@@ -148,7 +148,7 @@ public class ConfigManager {
 	 * All config files.
 	 */
 	public enum ConfigFile {
-		ARENAS("arenas.yml"), CONFIG("config.yml");
+		ARENAS("arenas.yml"), CONFIG("config.yml"), LOCALE("locale.yml");
 
 		private String file;
 

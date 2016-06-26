@@ -1,5 +1,6 @@
 package com.Impasta1000.XKits.resources;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.bukkit.Location;
@@ -46,11 +47,7 @@ public class ArenaManager {
 		arenaConfig.set(worldName + "." + arenaName + ".Pitch", pitch);
 		arenaConfig.set(worldName + "." + arenaName + ".Yaw", yaw);
 		
-		try {
-			arenaConfig.save(configManager.getConfigFile(ConfigFile.ARENAS));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		saveCustomConfig(configManager.getConfigFile(ConfigFile.ARENAS), arenaConfig);
 		
 		//TODO Add overwritten message
 		rApi.sendColouredMessage(player, " &6(!) Spawn has been set for &9" + arenaName);
@@ -97,11 +94,7 @@ public class ArenaManager {
 			rApi.sendColouredMessage(player, "&6(!) Successfully &cdeleted &6KitPVP Arena &9" + arenaName + "&6.");
 		}
 		
-		try {
-			arenaConfig.save(configManager.getConfigFile(ConfigFile.ARENAS));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		saveCustomConfig(configManager.getConfigFile(ConfigFile.ARENAS), arenaConfig);
 		
 	}
  	
@@ -150,6 +143,14 @@ public class ArenaManager {
 			return true;
 		} else {
 			return false;
+		}
+	}
+	
+	public void saveCustomConfig(File file, FileConfiguration config) {
+		try {
+			config.save(file);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

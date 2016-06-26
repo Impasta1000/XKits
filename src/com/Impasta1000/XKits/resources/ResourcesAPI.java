@@ -83,6 +83,9 @@ public class ResourcesAPI {
 	}
 
 	public void sendColouredMessage(Player player, String msg) {
+		if (msg == null) {
+			player.sendMessage("");
+		}
 		player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
 	}
 

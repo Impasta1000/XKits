@@ -70,7 +70,7 @@ public class CommandsHandler implements CommandExecutor {
 				
 				if (args[0].equalsIgnoreCase("arenas")) {
 					if (!checkPerm(player, "XKits.Arena.List")) {
-						rApi.sendColouredMessage(player, "&c(!) You have insufficient permission.");
+						rApi.sendColouredMessage(player, plugin.getMessages().get("NO-PERMISSION"));
 						return true;
 					}
 					arenaManager.listArenaLobbies(player);
@@ -106,6 +106,7 @@ public class CommandsHandler implements CommandExecutor {
 						plugin.getPlayersInArenaMap().put(player.getName(), arenaName);
 						rApi.sendColouredMessage(player, "&6(!) You have &ajoined &6KitPVP Arena &9" + arenaName + "&6.");
 						arenaManager.teleportToArenaLobby(player, arenaName);
+						rApi.removeAllPotionEffects(player);
 					}
 				}
 				
