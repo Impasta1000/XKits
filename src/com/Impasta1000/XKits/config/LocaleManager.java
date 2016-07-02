@@ -18,7 +18,7 @@ public class LocaleManager {
 		configManager.loadConfig(ConfigFile.LOCALE);
 		FileConfiguration config = configManager.getConfig(ConfigFile.LOCALE);
 		
-		name = replacePlaceholders(config.getString(name));
+		name = config.getString(name);
 		
 		return name;
 	}

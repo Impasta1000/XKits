@@ -3,7 +3,6 @@ package com.Impasta1000.XKits;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -46,12 +45,18 @@ public class XKits extends JavaPlugin {
 	}
 	
 	private HashMap<String, String> messages = new HashMap<String, String>();
+	
 	public HashMap<String, String> getMessages() {
 		return messages;
 	}
 	
 	private void loadLocalization() {
 		messages.put("NO-PERMISSION", localeManager.getLocaleMessage("Messages.no-permission"));
+		messages.put("INSUFFICIENT-ARGUMENTS", localeManager.getLocaleMessage("Messages.insufficient-arguments"));
+		
+		for (String msg : messages.values()) {
+			localeManager.replacePlaceholders(msg);
+		}
 	}
 
 	private ConfigManager configManager;
@@ -69,9 +74,6 @@ public class XKits extends JavaPlugin {
 		registerCommands();
 		registerEvents();
 		
-		FileConfiguration localeConfig = configManager.getConfig(ConfigFile.LOCALE);
-		localeConfig.options().copyDefaults(true);
-		
 		loadLocalization();
 	}
 
@@ -81,6 +83,7 @@ public class XKits extends JavaPlugin {
 
 	private void loadConfigs() {
 		configManager.loadConfigs();
+		configManager.getConfig(ConfigFile.LOCALE).options().copyDefaults(true);
 	}
 
 	private void registerCommands() {

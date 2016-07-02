@@ -7,33 +7,70 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.Impasta1000.XKits.XKits;
+import com.Impasta1000.XKits.resources.ArenaManager;
 import com.Impasta1000.XKits.resources.ResourcesAPI;
 
 public class ArenaGUI {
-	
+
 	/*
 	 * GUI System for managing Arenas
 	 */
-	
+
 	private ResourcesAPI rApi;
 	private XKits plugin;
+	private ArenaManager arenaManager;
 
 	public ArenaGUI(XKits plugin) {
 		this.plugin = plugin;
 		rApi = new ResourcesAPI(plugin);
+		arenaManager = new ArenaManager(plugin);
 	}
 	
-	public void openArenaGUI(Player player) {
-		Inventory arenaGui = Bukkit.createInventory(player, 9, rApi.colourize("&c&nArena Manager"));
+	public void openXKitsGUI(Player player) {
 		
-		//TODO Add whether commands is locked or not
-		ItemStack displayArena = rApi.createCustomItem(Material.BOOK_AND_QUILL, 1, "&a&lArenas List", "&7Click this to view list of arenas.");
+		boolean isPlayerInArena = arenaManager.checkPlayerInArena(player);
 		
-		ItemStack currentArena = rApi.createCustomItem(Material.IRON_CHESTPLATE, 1, "&6&lKitPVP Arena", "&7You are currently in &9" + plugin.getPlayersInArenaMap().get(player.getName()));
+		ItemStack currentArena, displayArena, manageArena, fillerItem;
 		
-		arenaGui.setItem(0, displayArena);
-		arenaGui.setItem(arenaGui.getSize() - 1, currentArena);
+		Inventory arenaGui = Bukkit.createInventory(null, 9, "XKits Arena");
+
+		displayArena = rApi.createCustomItem(Material.BOOK_AND_QUILL, 1, "&6&lList Arenas",
+				"&7Display list of arenas.");
 		
+		fillerItem = rApi.createGlassPane(Material.STAINED_GLASS_PANE, 1, (byte) 14, " ", " ");
+		
+		if (isPlayerInArena) {
+		currentArena = rApi.createCustomItem(Material.IRON_CHESTPLATE, 1, "&6&lArena",
+				"&7You are currently in &e" + plugin.getPlayersInArenaMap().get(player.getName()));
+		} else {
+			currentArena = rApi.createCustomItem(Material.IRON_CHESTPLATE, 1, "&6&lArena",
+					"&7You are not in any arena");
+		}
+		
+		manageArena = rApi.createCustomItem(Material.IRON_SWORD, 1, "&6&lManage Arena", "&fManage the arena");
+		
+		if (!player.hasPermission("XKits.Arena.Manage")) {
+			arenaGui.setItem(0, displayArena);
+			arenaGui.setItem(arenaGui.getSize() - 1, currentArena);
+		} else {
+			arenaGui.setItem(0, displayArena);
+			arenaGui.setItem(1, manageArena);
+			arenaGui.setItem(arenaGui.getSize() - 1, currentArena);
+		}
+		
+		for (int count = 0; count < arenaGui.getSize(); count++) {
+			if (arenaGui.getItem(count) == null) {
+				arenaGui.setItem(count, fillerItem);
+			}
+		}
+
 		player.openInventory(arenaGui);
+	}
+	
+	public void openArenaManagerGUI(Player player) {
+		
+		Inventory arenaManagerInv = Bukkit.createInventory(null, 9, "Arena Manager");
+		
+		player.openInventory(arenaManagerInv);
 	}
 }

@@ -1,10 +1,13 @@
 package com.Impasta1000.XKits.resources;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -20,7 +23,15 @@ public class ResourcesAPI {
 	public ResourcesAPI(XKits plugin) {
 		this.plugin = plugin;
 	}
-
+	
+	public void saveCustomConfig(File file, FileConfiguration config) {
+		try {
+			config.save(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	// Help menu
 	public void printHelpMenu(Player player) {
 		List<String> helpMenu = new ArrayList<String>();
@@ -30,10 +41,10 @@ public class ResourcesAPI {
 		helpMenu.add("  &2[] &f= optional arguments");
 		helpMenu.add("  &6<> &f= required arguments");
 		helpMenu.add(" ");
-		helpMenu.add("  &9&nPlayer Help");
+		helpMenu.add("  &9&nPlayer Commands");
+		helpMenu.add("  &f/xkits &e- Opens XKits GUI.");
 		helpMenu.add("  &f/xkits help &e- Shows help.");
 		helpMenu.add("  &f/xkits join &6<arenaName> &e- Join KitPVP Arena.");
-		helpMenu.add("  &f/xkits arena &e- Arena GUI.");
 		helpMenu.add("  &f/xkits kits &e- Open Kits GUI.");
 		helpMenu.add("  &f/xkits spawn &e- Teleport to Arena spawn.");
 		helpMenu.add(" ");
@@ -59,6 +70,25 @@ public class ResourcesAPI {
 
 		ItemStack item = new ItemStack(material);
 		item.setAmount(amount);
+		ItemMeta itemMeta = item.getItemMeta();
+
+		itemMeta.setDisplayName(colourize(colouredDisplayName));
+		List<String> loreList = new ArrayList<String>();
+		for (String x : colouredLore) {
+			loreList.add(colourize(x));
+		}
+		itemMeta.setLore(loreList);
+		item.setItemMeta(itemMeta);
+
+		return item;
+	}
+	
+	public ItemStack createGlassPane(Material material, int amount, short data, String colouredDisplayName,
+			String... colouredLore) {
+
+		ItemStack item = new ItemStack(material);
+		item.setAmount(amount);
+		item.setDurability(data);
 		ItemMeta itemMeta = item.getItemMeta();
 
 		itemMeta.setDisplayName(colourize(colouredDisplayName));

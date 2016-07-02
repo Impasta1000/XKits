@@ -42,7 +42,7 @@ public class CommandsHandler implements CommandExecutor {
 		if (cmdName.equalsIgnoreCase("XKits")) {
 			
 			if (args.length == 0) {
-				player.sendMessage("Insufficient arguments! Please do /xkits help for more information");
+				arenaGui.openXKitsGUI(player);
 			}
 			
 			if (args.length == 1) {
@@ -56,7 +56,7 @@ public class CommandsHandler implements CommandExecutor {
 						rApi.sendColouredMessage(player, "&c(!) You are not in a KitPVP Arena.");
 					} else {
 						String arenaName = plugin.getPlayersInArenaMap().get(player.getName());
-						arenaManager.teleportToArenaLobby(player, arenaName);
+						arenaManager.teleportToArenaSpawn(player, arenaName);
 					}
 				}
 				
@@ -75,13 +75,6 @@ public class CommandsHandler implements CommandExecutor {
 					}
 				}
 				
-				if (args[0].equalsIgnoreCase("arena")) {
-					if (!plugin.getPlayersInArenaMap().containsKey(player.getName())) {
-						rApi.sendColouredMessage(player, "&c(!) You need to be in the KitPVP Arena.");
-					} else {
-						arenaGui.openArenaGUI(player);
-					}
-				}
 			}
 			
 			if (args.length == 2) {
@@ -97,7 +90,7 @@ public class CommandsHandler implements CommandExecutor {
 					}
 					
 					String arenaName = args[1];
-					arenaManager.setArenaLobby(player, arenaName);
+					arenaManager.setArenaSpawn(player, arenaName);
 				}
 				
 				if (args[0].equalsIgnoreCase("join")) {
@@ -111,7 +104,7 @@ public class CommandsHandler implements CommandExecutor {
 					} else {
 						plugin.getPlayersInArenaMap().put(player.getName(), arenaName);
 						rApi.sendColouredMessage(player, "&6(!) You have &ajoined &6KitPVP Arena &9" + arenaName + "&6.");
-						arenaManager.teleportToArenaLobby(player, arenaName);
+						arenaManager.teleportToArenaSpawn(player, arenaName);
 						rApi.removeAllPotionEffects(player);
 						playerManager.saveInvToHashMap(player, plugin.getPlayerInventories());
 						player.getInventory().clear();
@@ -129,7 +122,7 @@ public class CommandsHandler implements CommandExecutor {
 					if (!arenaManager.checkArenaInFile(player, arenaName)) {
 						return true;
 					}
-					arenaManager.deleteArenaLobby(player, arenaName);
+					arenaManager.deleteArena(player, arenaName);
 				}
 				
 			}

@@ -34,7 +34,7 @@ public class ArenaGUIListener implements Listener {
 			return;
 		}
 
-		if (clickedInv.getName().equals(rApi.colourize("&c&nArena Manager"))) {
+		if (clickedInv.getName().equals("XKits Arena")) {
 			
 			event.setCancelled(true);
 
@@ -44,7 +44,7 @@ public class ArenaGUIListener implements Listener {
 
 					String name = clickedItem.getItemMeta().getDisplayName();
 					
-					if (name.equals(rApi.colourize("&a&lArenas List")) && clickedItem.getType() == Material.BOOK_AND_QUILL) {
+					if (name.equals(rApi.colourize("&6&lList Arenas")) && clickedItem.getType() == Material.BOOK_AND_QUILL) {
 						
 						if (!rApi.checkPerm(player, "XKits.Arena.List")) {
 							rApi.sendColouredMessage(player, plugin.getMessages().get("NO-PERMISSION"));
@@ -52,7 +52,7 @@ public class ArenaGUIListener implements Listener {
 						}
 						event.setCancelled(true);
 						player.closeInventory();
-						arenaManager.listArenaLobbies(player);
+						arenaManager.listArenas(player);
 					}
 				}
 			}

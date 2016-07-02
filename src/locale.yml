@@ -5,10 +5,16 @@
 ############################################
 
 Configuration:
-# Prefix is usually displayed in front of messages
-# Placeholder: %prefix%
+
+    # Prefix is usually displayed in front of messages
+    # Placeholder: %prefix%
     Prefix: "&c&l(!)"
 
+# Messages are configurable    
 Messages:
     
+    # Displayed when a player tries to access something he does not have permission for
     no-permission: "%prefix% &cYou have insufficient permission!"
+    
+    # Displayed when there are not enough arguments
+    insufficient-arguments: "%prefix% &cInsufficient arguments! Please check &6/xkits help &cfor more info."

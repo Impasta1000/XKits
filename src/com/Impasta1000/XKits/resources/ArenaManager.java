@@ -30,7 +30,7 @@ public class ArenaManager {
 		this.rApi = new ResourcesAPI(plugin);
 	}
 	
-	public void setArenaLobby(Player player, String arenaName) {
+	public void setArenaSpawn(Player player, String arenaName) {
 		Location playerLoc = player.getLocation();
 		String worldName = player.getWorld().getName();
 		double x = playerLoc.getX();
@@ -54,7 +54,7 @@ public class ArenaManager {
 		rApi.sendColouredMessage(player, " &6(!) The co-ordinates are: &c" + x + ", " + y + ", " + z);
 	}
 	
-	public void listArenaLobbies(Player player) {
+	public void listArenas(Player player) {
 		
 		String worldName = player.getWorld().getName();
 		
@@ -79,7 +79,7 @@ public class ArenaManager {
 		}
 	}
 	
-	public void deleteArenaLobby(Player player, String arenaName) {
+	public void deleteArena(Player player, String arenaName) {
 		
 		//TODO Add permission check
 		String worldName = player.getWorld().getName();
@@ -98,7 +98,7 @@ public class ArenaManager {
 		
 	}
  	
-	public void teleportToArenaLobby(Player player, String arenaName) {
+	public void teleportToArenaSpawn(Player player, String arenaName) {
 		String worldName = player.getWorld().getName();
 		
 		configManager.loadConfig(ConfigFile.ARENAS);
@@ -146,7 +146,7 @@ public class ArenaManager {
 		}
 	}
 	
-	public void saveCustomConfig(File file, FileConfiguration config) {
+	private void saveCustomConfig(File file, FileConfiguration config) {
 		try {
 			config.save(file);
 		} catch (IOException e) {

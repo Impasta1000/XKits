@@ -45,10 +45,10 @@ public class RangerKit implements Kit {
 	public void setArmorContents(Player player) {
 		player.getInventory().setArmorContents(null);
 		ItemStack[] armorContents = new ItemStack[] {
-				rApi.createCustomItem(Material.CHAINMAIL_BOOTS, 1, "&f[Ranger] Boots", "&eKit: " + getKitName()),
-				rApi.createCustomItem(Material.CHAINMAIL_LEGGINGS, 1, "&f[Ranger] Leggings", "&eKit: " + getKitName()),
-				rApi.createCustomItem(Material.CHAINMAIL_CHESTPLATE, 1, "&f[Ranger] Chestplate","&eKit: " + getKitName()),
-				rApi.createCustomItem(Material.CHAINMAIL_HELMET, 1, "&f[Ranger] Helmet", "&eKit: " + getKitName()) };
+				rApi.createCustomItem(Material.CHAINMAIL_BOOTS, 1, "&fChainmail Boots", "&eKit: " + getKitName()),
+				rApi.createCustomItem(Material.CHAINMAIL_LEGGINGS, 1, "&fChainmail Leggings", "&eKit: " + getKitName()),
+				rApi.createCustomItem(Material.CHAINMAIL_CHESTPLATE, 1, "&fChainmail Chestplate","&eKit: " + getKitName()),
+				rApi.createCustomItem(Material.CHAINMAIL_HELMET, 1, "&fChainmail Helmet", "&eKit: " + getKitName()) };
 		player.getInventory().setArmorContents(armorContents);
 		player.updateInventory();
 	}
@@ -57,10 +57,10 @@ public class RangerKit implements Kit {
 	public void setInventoryContents(Player player) {
 		Inventory playerInv = player.getInventory();
 		ItemStack[] inventoryContents = new ItemStack[] {
-				rApi.createCustomItem(Material.WOOD_SWORD, 1, "&f[Ranger] Wooden Sword", "&eKit: " + getKitName()),
-				rApi.createCustomItem(Material.BOW, 1, "&f[Ranger] Bow", "&eKit: " + getKitName()), 
+				rApi.createCustomItem(Material.WOOD_SWORD, 1, "&fWooden Sword", "&eKit: " + getKitName()),
+				rApi.createCustomItem(Material.BOW, 1, "&fBow", "&eKit: " + getKitName()), 
 				rApi.createItem(Material.ARROW, 16),
-				rApi.createCustomItem(Material.COOKED_BEEF, 8, "&f[Ranger] Steak", "&eKit: " + getKitName()) };
+				rApi.createCustomItem(Material.COOKED_BEEF, 8, "&fSteak", "&eKit: " + getKitName()) };
 		playerInv.setContents(inventoryContents);
 	}
 	
