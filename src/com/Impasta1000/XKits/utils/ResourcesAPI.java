@@ -1,4 +1,4 @@
-package com.Impasta1000.XKits.resources;
+package com.Impasta1000.XKits.utils;
 
 import java.io.File;
 import java.io.IOException;

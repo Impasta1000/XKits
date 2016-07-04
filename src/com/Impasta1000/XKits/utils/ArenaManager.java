@@ -1,4 +1,4 @@
-package com.Impasta1000.XKits.resources;
+package com.Impasta1000.XKits.utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,8 +50,8 @@ public class ArenaManager {
 		saveCustomConfig(configManager.getConfigFile(ConfigFile.ARENAS), arenaConfig);
 		
 		//TODO Add overwritten message
-		rApi.sendColouredMessage(player, " &6(!) Spawn has been set for &9" + arenaName);
-		rApi.sendColouredMessage(player, " &6(!) The co-ordinates are: &c" + x + ", " + y + ", " + z);
+		rApi.sendColouredMessage(player, "&6&l(!) &6Spawn has been set for &9" + arenaName);
+		rApi.sendColouredMessage(player, "&6&l(!) &6The co-ordinates are: &c" + x + ", " + y + ", " + z);
 	}
 	
 	public void listArenas(Player player) {
@@ -63,12 +63,12 @@ public class ArenaManager {
 		ConfigurationSection section = arenaConfig.getConfigurationSection(worldName);
 		
 		if (section == null) {
-			rApi.sendColouredMessage(player, "&c(!) There are no KitPVP Arenas.");
+			rApi.sendColouredMessage(player, "&c&l(!) &cThere are no KitPVP Arenas.");
 			return;
 		}
 		
 		if (section.getKeys(false).isEmpty()) {
-			rApi.sendColouredMessage(player, "&c(!) There are no KitPVP Arenas.");
+			rApi.sendColouredMessage(player, "&c&l(!) &cThere are no KitPVP Arenas.");
 			return;
 		}
 		

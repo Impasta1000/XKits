@@ -51,12 +51,9 @@ public class XKits extends JavaPlugin {
 	}
 	
 	private void loadLocalization() {
-		messages.put("NO-PERMISSION", localeManager.getLocaleMessage("Messages.no-permission"));
-		messages.put("INSUFFICIENT-ARGUMENTS", localeManager.getLocaleMessage("Messages.insufficient-arguments"));
+		messages.put("NO-PERMISSION", localeManager.replacePlaceholders(localeManager.getLocaleMessage("Messages.no-permission")));
+		messages.put("INSUFFICIENT-ARGUMENTS", localeManager.replacePlaceholders(localeManager.getLocaleMessage("Messages.insufficient-arguments")));
 		
-		for (String msg : messages.values()) {
-			localeManager.replacePlaceholders(msg);
-		}
 	}
 
 	private ConfigManager configManager;

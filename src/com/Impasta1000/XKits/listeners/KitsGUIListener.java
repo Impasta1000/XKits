@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import com.Impasta1000.XKits.XKits;
 import com.Impasta1000.XKits.kits.FighterKit;
 import com.Impasta1000.XKits.kits.RangerKit;
-import com.Impasta1000.XKits.resources.ResourcesAPI;
+import com.Impasta1000.XKits.utils.ResourcesAPI;
 
 public class KitsGUIListener implements Listener {
 

@@ -7,9 +7,9 @@ import org.bukkit.entity.Player;
 
 import com.Impasta1000.XKits.gui.ArenaGUI;
 import com.Impasta1000.XKits.gui.KitGUI;
-import com.Impasta1000.XKits.resources.ArenaManager;
-import com.Impasta1000.XKits.resources.PlayerManager;
-import com.Impasta1000.XKits.resources.ResourcesAPI;
+import com.Impasta1000.XKits.utils.ArenaManager;
+import com.Impasta1000.XKits.utils.PlayerManager;
+import com.Impasta1000.XKits.utils.ResourcesAPI;
 
 public class CommandsHandler implements CommandExecutor {
 	
@@ -109,20 +109,6 @@ public class CommandsHandler implements CommandExecutor {
 						playerManager.saveInvToHashMap(player, plugin.getPlayerInventories());
 						player.getInventory().clear();
 					}
-				}
-				
-				if (args[0].equalsIgnoreCase("deletelobby")) {
-					
-					if (!checkPerm(player, "XKits.Arena.Manage")) {
-						rApi.sendColouredMessage(player, plugin.getMessages().get("NO-PERMISSION"));
-						return true;
-					}
-					
-					String arenaName = args[1];
-					if (!arenaManager.checkArenaInFile(player, arenaName)) {
-						return true;
-					}
-					arenaManager.deleteArena(player, arenaName);
 				}
 				
 			}

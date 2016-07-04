@@ -8,7 +8,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.Impasta1000.XKits.XKits;
-import com.Impasta1000.XKits.resources.ResourcesAPI;
+import com.Impasta1000.XKits.utils.ResourcesAPI;
 
 public class RangerKit implements Kit {
 

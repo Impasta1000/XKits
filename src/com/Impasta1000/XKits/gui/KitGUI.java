@@ -7,7 +7,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.Impasta1000.XKits.XKits;
-import com.Impasta1000.XKits.resources.ResourcesAPI;
+import com.Impasta1000.XKits.utils.ResourcesAPI;
 
 public class KitGUI {
 	
