@@ -48,8 +48,6 @@ public class ResourcesAPI {
 		helpMenu.add("  &f/xkits kits &e- Open Kits GUI.");
 		helpMenu.add("  &f/xkits spawn &e- Teleport to Arena spawn.");
 		helpMenu.add(" ");
-		helpMenu.add("  &9&nAdmin Help");
-		helpMenu.add("	&f/xkits setLobby &6<arenaName> &e- Set lobby/spawn for Arena.");
 		helpMenu.add("&8*---------------------------------------------------*");
 		for (String msgToSend : helpMenu) {
 			sendColouredMessage(player, msgToSend);

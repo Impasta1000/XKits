@@ -79,20 +79,6 @@ public class CommandsHandler implements CommandExecutor {
 			
 			if (args.length == 2) {
 				
-				/*
-				 * In future implementations, players can use /xkits "arenaName" edit
-				 * Then, they will be able to do cmds like /setSpawn
-				 */
-				if (args[0].equalsIgnoreCase("setLobby")) {
-					if (!checkPerm(player, "XKits.Arena.Manage")) {
-						rApi.sendColouredMessage(player, plugin.getMessages().get("NO-PERMISSION"));
-						return true;
-					}
-					
-					String arenaName = args[1];
-					arenaManager.setArenaSpawn(player, arenaName);
-				}
-				
 				if (args[0].equalsIgnoreCase("join")) {
 					String arenaName = args[1];
 					if (!arenaManager.checkArenaInFile(player, arenaName)) {
@@ -114,14 +100,6 @@ public class CommandsHandler implements CommandExecutor {
 			}
 		}
 		return false;
-	}
-	
-	private boolean checkPerm(Player player, String perm) {
-		if (!player.hasPermission(perm)) {
-			return false;
-		} else {
-			return true;
-		}
 	}
 
 }
