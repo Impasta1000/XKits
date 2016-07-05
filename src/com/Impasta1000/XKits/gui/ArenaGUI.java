@@ -34,17 +34,18 @@ public class ArenaGUI {
 	public void openXKitsGUI(Player player) {
 
 		boolean isPlayerInArena = arenaManager.checkPlayerInArena(player);
-		ItemStack currentArena, displayArena, manageArena, fillerItem;
+		ItemStack currentArena, displayArena, manageArena, fillerItem, createArena;
 		Inventory arenaGui = Bukkit.createInventory(null, 9, "XKits");
 
-		displayArena = rApi.createCustomItem(Material.BOOK_AND_QUILL, 1, "&6&lList Arenas", "&7Display list of arenas.");
-		fillerItem = rApi.createGlassPane(Material.STAINED_GLASS_PANE, 1, (byte) 14, " ", " ");
-		manageArena = rApi.createCustomItem(Material.IRON_SWORD, 1, "&6&lManage Arena", "&7Manage the arena");
+		displayArena = rApi.createCustomItem(Material.BOOK_AND_QUILL, 1, "&6&lList Arenas", "&7Display list of arenas");
+		fillerItem = rApi.createGlassPane(Material.STAINED_GLASS_PANE, 1, (byte) 7, " ", " ");
+		manageArena = rApi.createCustomItem(Material.IRON_SWORD, 1, "&6&lManage Arena", "&7Manage Arenas");
+		createArena = rApi.createCustomItem(Material.FENCE_GATE, 1, "&6&lCreate a new Arena", "&7Creates a new KitPVP Arena");
 
 		if (isPlayerInArena) {
 			currentArena = rApi.createCustomItem(Material.IRON_CHESTPLATE, 1, "&6&lArena", "&7You are currently in &e" + plugin.getPlayersInArenaMap().get(player.getName()));
 		} else {
-			currentArena = rApi.createCustomItem(Material.IRON_CHESTPLATE, 1, "&6&lArena", "&7You are not in any arena");
+			currentArena = rApi.createCustomItem(Material.IRON_CHESTPLATE, 1, "&6&lArena", "&7You are currently not in any KitPVP Arena");
 		}
 
 		if (!player.hasPermission("XKits.Arena.Manage")) {
@@ -52,7 +53,8 @@ public class ArenaGUI {
 			arenaGui.setItem(arenaGui.getSize() - 1, currentArena);
 		} else {
 			arenaGui.setItem(0, displayArena);
-			arenaGui.setItem(1, manageArena);
+			arenaGui.setItem(1, createArena);
+			arenaGui.setItem(2, manageArena);
 			arenaGui.setItem(arenaGui.getSize() - 1, currentArena);
 		}
 
@@ -68,14 +70,14 @@ public class ArenaGUI {
 	public void openArenaManagerGUI(Player player, String arenaName) {
 
 		Inventory arenaManagerInv = Bukkit.createInventory(null, 9, arenaName);
-		ItemStack setSpawn, deleteSpawn, fillerItem;
+		ItemStack setSpawn, deleteArena, fillerItem;
 
 		setSpawn = rApi.createCustomItem(Material.BED, 1, "&6&lSet Spawn", "&7Set spawn point at the location you are standing on.");
-		deleteSpawn = rApi.createCustomItem(Material.IRON_PICKAXE, 1, "&6&lDelete Arena", "&7Delete the Arena you have selected");
-		fillerItem = rApi.createGlassPane(Material.STAINED_GLASS_PANE, 1, (byte) 14, " ", " ");
+		deleteArena = rApi.createCustomItem(Material.IRON_PICKAXE, 1, "&6&lDelete Arena", "&7Delete the Arena you have selected");
+		fillerItem = rApi.createGlassPane(Material.STAINED_GLASS_PANE, 1, (byte) 7, " ", " ");
 
-		arenaManagerInv.setItem(0, setSpawn);
-		arenaManagerInv.setItem(1, deleteSpawn);
+		arenaManagerInv.setItem(1, setSpawn);
+		arenaManagerInv.setItem(2, deleteArena);
 
 		for (int count = 0; count < arenaManagerInv.getSize(); count++) {
 			if (arenaManagerInv.getItem(count) == null) {

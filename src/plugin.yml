@@ -1,5 +1,5 @@
 name: XKits
-version: Build#010
+version: Build#011
 author: Impasta1000
 main: com.Impasta1000.XKits.XKits
 description: A KitPVP plugin
@@ -22,6 +22,10 @@ permissions:
         children:
             XKits.Arena.Manage: true
             XKits.Arena.List: true
+            XKits.Arena.Create: true
+    XKits.Arena.Create:
+        description: Create a new Arena
+        default: false
     XKits.Arena.Manage:
         description: Manage arenas
         default: false
