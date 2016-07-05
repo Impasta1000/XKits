@@ -37,19 +37,15 @@ public class ArenaGUI {
 		ItemStack currentArena, displayArena, manageArena, fillerItem;
 		Inventory arenaGui = Bukkit.createInventory(null, 9, "XKits");
 
-		displayArena = rApi.createCustomItem(Material.BOOK_AND_QUILL, 1, "&6&lList Arenas",
-				"&7Display list of arenas.");
+		displayArena = rApi.createCustomItem(Material.BOOK_AND_QUILL, 1, "&6&lList Arenas", "&7Display list of arenas.");
 		fillerItem = rApi.createGlassPane(Material.STAINED_GLASS_PANE, 1, (byte) 14, " ", " ");
+		manageArena = rApi.createCustomItem(Material.IRON_SWORD, 1, "&6&lManage Arena", "&7Manage the arena");
 
 		if (isPlayerInArena) {
-			currentArena = rApi.createCustomItem(Material.IRON_CHESTPLATE, 1, "&6&lArena",
-					"&7You are currently in &e" + plugin.getPlayersInArenaMap().get(player.getName()));
+			currentArena = rApi.createCustomItem(Material.IRON_CHESTPLATE, 1, "&6&lArena", "&7You are currently in &e" + plugin.getPlayersInArenaMap().get(player.getName()));
 		} else {
-			currentArena = rApi.createCustomItem(Material.IRON_CHESTPLATE, 1, "&6&lArena",
-					"&7You are not in any arena");
+			currentArena = rApi.createCustomItem(Material.IRON_CHESTPLATE, 1, "&6&lArena", "&7You are not in any arena");
 		}
-
-		manageArena = rApi.createCustomItem(Material.IRON_SWORD, 1, "&6&lManage Arena", "&7Manage the arena");
 
 		if (!player.hasPermission("XKits.Arena.Manage")) {
 			arenaGui.setItem(0, displayArena);
@@ -74,10 +70,8 @@ public class ArenaGUI {
 		Inventory arenaManagerInv = Bukkit.createInventory(null, 9, arenaName);
 		ItemStack setSpawn, deleteSpawn, fillerItem;
 
-		setSpawn = rApi.createCustomItem(Material.BED, 1, "&6&lSet Spawn",
-				"&7Set spawn point at the location you are standing on.");
-		deleteSpawn = rApi.createCustomItem(Material.IRON_PICKAXE, 1, "&6&lDelete Arena",
-				"&7Delete the Arena you have selected");
+		setSpawn = rApi.createCustomItem(Material.BED, 1, "&6&lSet Spawn", "&7Set spawn point at the location you are standing on.");
+		deleteSpawn = rApi.createCustomItem(Material.IRON_PICKAXE, 1, "&6&lDelete Arena", "&7Delete the Arena you have selected");
 		fillerItem = rApi.createGlassPane(Material.STAINED_GLASS_PANE, 1, (byte) 14, " ", " ");
 
 		arenaManagerInv.setItem(0, setSpawn);
@@ -98,6 +92,7 @@ public class ArenaGUI {
 		FileConfiguration arenaConfig = configManager.getConfig(ConfigFile.ARENAS);
 
 		String worldName = player.getWorld().getName();
+		ItemStack arenaItem;
 
 		if (arenaConfig == null || arenaConfig.getConfigurationSection(worldName) == null) {
 			rApi.sendColouredMessage(player, "&c(!) There are no KitPVP Arenas. Please create one first!");
@@ -105,7 +100,6 @@ public class ArenaGUI {
 		}
 
 		Inventory arenaSelectorInv = Bukkit.createInventory(null, 54, "Arena Selector");
-		ItemStack arenaItem;
 
 		int count = 0;
 		for (String key : arenaConfig.getConfigurationSection(worldName).getKeys(false)) {

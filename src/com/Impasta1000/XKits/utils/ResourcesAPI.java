@@ -50,7 +50,6 @@ public class ResourcesAPI {
 		helpMenu.add(" ");
 		helpMenu.add("  &9&nAdmin Help");
 		helpMenu.add("	&f/xkits setLobby &6<arenaName> &e- Set lobby/spawn for Arena.");
-		helpMenu.add("  &f/xkits deleteLobby &6<arenaName> &e - Delete lobby/spawn for Arena");
 		helpMenu.add("&8*---------------------------------------------------*");
 		for (String msgToSend : helpMenu) {
 			sendColouredMessage(player, msgToSend);

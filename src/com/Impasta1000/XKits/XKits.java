@@ -3,6 +3,7 @@ package com.Impasta1000.XKits;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,6 +36,7 @@ public class XKits extends JavaPlugin {
 	 * @param playerUUID, itemStack[]
 	 */
 	private HashMap<String, ItemStack[]> playerInventories = new HashMap<String, ItemStack[]>();
+	private HashMap<String, String> messages = new HashMap<String, String>();
 
 	public HashMap<String, String> getPlayersInArenaMap() {
 		return playersInArena;
@@ -44,16 +46,8 @@ public class XKits extends JavaPlugin {
 		return playerInventories;
 	}
 	
-	private HashMap<String, String> messages = new HashMap<String, String>();
-	
 	public HashMap<String, String> getMessages() {
 		return messages;
-	}
-	
-	private void loadLocalization() {
-		messages.put("NO-PERMISSION", localeManager.replacePlaceholders(localeManager.getLocaleMessage("Messages.no-permission")));
-		messages.put("INSUFFICIENT-ARGUMENTS", localeManager.replacePlaceholders(localeManager.getLocaleMessage("Messages.insufficient-arguments")));
-		
 	}
 
 	private ConfigManager configManager;
@@ -70,12 +64,19 @@ public class XKits extends JavaPlugin {
 		loadConfigs();
 		registerCommands();
 		registerEvents();
-		
 		loadLocalization();
 	}
 
 	public void onDisable() {
+		
+		Player player;
+		for (String p : playersInArena.keySet()) {
+			player = Bukkit.getPlayerExact(p);
+			player.getInventory().clear();
+			player.getInventory().setContents(playerInventories.get(player.getName()));
+		}
 		playersInArena.clear();
+		playerInventories.clear();
 	}
 
 	private void loadConfigs() {
@@ -91,6 +92,11 @@ public class XKits extends JavaPlugin {
 		PluginManager PM = Bukkit.getPluginManager();
 		PM.registerEvents(new KitsGUIListener(this), this);
 		PM.registerEvents(new ArenaGUIListener(this), this);
+	}
+	
+	private void loadLocalization() {
+		messages.put("NO-PERMISSION", localeManager.replacePlaceholders(localeManager.getLocaleMessage("Messages.no-permission")));
+		messages.put("INSUFFICIENT-ARGUMENTS", localeManager.replacePlaceholders(localeManager.getLocaleMessage("Messages.insufficient-arguments")));
 	}
 
 }
