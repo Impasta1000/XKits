@@ -76,28 +76,6 @@ public class CommandsHandler implements CommandExecutor {
 				}
 				
 			}
-			
-			if (args.length == 2) {
-				
-				if (args[0].equalsIgnoreCase("join")) {
-					String arenaName = args[1];
-					if (!arenaManager.checkArenaInFile(player, arenaName)) {
-						return true;
-					}
-					if (plugin.getPlayersInArenaMap().containsKey(player.getName())) {
-						rApi.sendColouredMessage(player, "&c(!) You are already in a KitPVP Arena.");
-						rApi.sendColouredMessage(player, "&6(!) Current Arena: &9" + plugin.getPlayersInArenaMap().get(player.getName()));
-					} else {
-						plugin.getPlayersInArenaMap().put(player.getName(), arenaName);
-						rApi.sendColouredMessage(player, "&6(!) You have &ajoined &6KitPVP Arena &9" + arenaName + "&6.");
-						arenaManager.teleportToArenaSpawn(player, arenaName);
-						rApi.removeAllPotionEffects(player);
-						playerManager.saveInvToHashMap(player, plugin.getPlayerInventories());
-						player.getInventory().clear();
-					}
-				}
-				
-			}
 		}
 		return false;
 	}

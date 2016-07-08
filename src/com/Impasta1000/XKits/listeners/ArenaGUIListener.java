@@ -1,12 +1,10 @@
 package com.Impasta1000.XKits.listeners;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,8 +14,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.Impasta1000.XKits.XKits;
-import com.Impasta1000.XKits.config.ConfigManager;
-import com.Impasta1000.XKits.config.ConfigManager.ConfigFile;
 import com.Impasta1000.XKits.gui.ArenaGUI;
 import com.Impasta1000.XKits.utils.ArenaManager;
 import com.Impasta1000.XKits.utils.ResourcesAPI;
@@ -28,37 +24,34 @@ public class ArenaGUIListener implements Listener {
 	private ArenaManager arenaManager;
 	private XKits plugin;
 	private ArenaGUI arenaGui;
-	private ConfigManager configManager;
 
 	public ArenaGUIListener(XKits plugin) {
 		this.plugin = plugin;
 		rApi = new ResourcesAPI(plugin);
 		arenaManager = new ArenaManager(plugin);
 		arenaGui = new ArenaGUI(plugin);
-		configManager = new ConfigManager(plugin);
 	}
-	
-	private List<String> creatingArenaName = new ArrayList<String>();
-	
+
+	private HashSet<String> creatingArena = new HashSet<String>();
+	private HashSet<String> joiningArena = new HashSet<String>();
+	private HashSet<String> managingArena = new HashSet<String>();
+
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
 		String eventMessage = event.getMessage();
-		
-		if (!creatingArenaName.contains(player.getName())) {
+
+		if (!creatingArena.contains(player.getName())) {
 			return;
 		} else {
 			event.setCancelled(true);
-			creatingArenaName.remove(player.getName());
+			creatingArena.remove(player.getName());
 			arenaManager.createNormalArena(player, eventMessage);
 		}
 	}
 
 	@EventHandler
 	public void inventoryClick(InventoryClickEvent event) {
-
-		configManager.loadConfig(ConfigFile.ARENAS);
-		FileConfiguration arenaConfig = configManager.getConfig(ConfigFile.ARENAS);
 
 		Player player = (Player) event.getWhoClicked();
 		Inventory clickedInv = event.getClickedInventory();
@@ -74,7 +67,8 @@ public class ArenaGUIListener implements Listener {
 
 				String name = clickedItem.getItemMeta().getDisplayName();
 
-				if (name.equals(rApi.colourize("&6&lList Arenas")) && clickedItem.getType() == Material.BOOK_AND_QUILL) {
+				if (name.equals(rApi.colourize("&6&lList Arenas"))
+						&& clickedItem.getType() == Material.BOOK_AND_QUILL) {
 
 					if (!rApi.checkPerm(player, "XKits.Arena.List")) {
 						rApi.sendColouredMessage(player, plugin.getMessages().get("NO-PERMISSION"));
@@ -87,7 +81,8 @@ public class ArenaGUIListener implements Listener {
 					player.closeInventory();
 					arenaManager.listArenas(player);
 
-				} else if (name.equals(rApi.colourize("&6&lManage Arena")) || clickedItem.getType() == Material.IRON_SWORD) {
+				}
+				if (name.equals(rApi.colourize("&6&lManage Arena")) || clickedItem.getType() == Material.IRON_SWORD) {
 
 					if (!rApi.checkPerm(player, "XKits.Arena.Manage")) {
 						rApi.sendColouredMessage(player, plugin.getMessages().get("NO-PERMISSION"));
@@ -97,68 +92,96 @@ public class ArenaGUIListener implements Listener {
 					}
 
 					event.setCancelled(true);
+					managingArena.add(player.getName());
 					arenaGui.openArenaSelectorGUI(player);
-					
-				} else if (name.equals(rApi.colourize("&6&lCreate a new Arena")) && clickedItem.getType() == Material.FENCE_GATE) {
-					
+
+				}
+				if (name.equals(rApi.colourize("&6&lCreate a new Arena"))
+						&& clickedItem.getType() == Material.FENCE_GATE) {
+
 					if (!rApi.checkPerm(player, "XKits.Arena.Manage")) {
 						rApi.sendColouredMessage(player, plugin.getMessages().get("NO-PERMISSION"));
 						event.setCancelled(true);
 						player.closeInventory();
 						return;
 					}
-					
-					if (creatingArenaName.contains(player.getName())) {
+
+					if (creatingArena.contains(player.getName())) {
 						rApi.sendColouredMessage(player, "&c&l(!) &cYou are already in progress of creating an Arena.");
 						return;
 					}
-					
-					creatingArenaName.add(player.getName());
+
+					creatingArena.add(player.getName());
 					event.setCancelled(true);
 					player.closeInventory();
-					rApi.sendColouredMessage(player, "&6&l(!) &6Please enter the name of the Arena. You have &c30 seconds &6to do so.");
-					
+					rApi.sendColouredMessage(player,
+							"&6&l(!) &6Please enter the name of the Arena. You have &c30 seconds &6to do so.");
+
 					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 						public void run() {
-							if (creatingArenaName.contains(player.getName())) {
-								creatingArenaName.remove(player.getName());
-								rApi.sendColouredMessage(player, "&c&l(!) &cYou did not enter the name in time. Please restart if you want to create a new KitPVP Arena.");
+							if (creatingArena.contains(player.getName())) {
+								creatingArena.remove(player.getName());
+								rApi.sendColouredMessage(player,
+										"&c&l(!) &cYou did not enter the name in time. Please restart if you want to create a new KitPVP Arena.");
 							}
 						}
 					}, 600);
-					
+
+				}
+				if (name.equals(rApi.colourize("&6&lJoin an Arena")) && clickedItem.getType() == Material.WATCH) {
+					arenaGui.openArenaSelectorGUI(player);
+					if (arenaManager.checkPlayerInArena(player)) {
+						player.closeInventory();
+						event.setCancelled(true);
+						rApi.sendColouredMessage(player, "&c(!) You are already in a KitPVP Arena.");
+						rApi.sendColouredMessage(player, "&6(!) Current Arena: &9" + plugin.getPlayersInArenaMap().get(player.getName()));
+						return;
+					}
+					joiningArena.add(player.getName());
+					event.setCancelled(true);
+
 				} else {
 					event.setCancelled(true);
 				}
-			} 
-		}
-		
-		if (clickedInv.getName().equals("Arena Selector")) {
-			
-			if (clickedItem.getType() != Material.COMPASS) {
-				return;
 			}
-			arenaGui.openArenaManagerGUI(player, ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName()));
-			event.setCancelled(true);
 		}
 
-		for (String arenaName : arenaConfig.getConfigurationSection(player.getWorld().getName()).getKeys(false)) {
+		if (clickedInv.getName().equals("Arena Selector")) {
 
-			if (clickedInv.getName().equals(arenaName)) {
+			if (clickedItem.getType() == Material.COMPASS) {
 
-				String name = clickedItem.getItemMeta().getDisplayName();
+				if (joiningArena.contains(player.getName())) {
 
-				if (name.equals(rApi.colourize("&6&lSet Spawn"))) {
-					arenaManager.setArenaSpawn(player, arenaName);
+					arenaManager.joinArena(player, ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName()));
 					event.setCancelled(true);
-					player.closeInventory();
-				} else if (name.equals(rApi.colourize("&6&lDelete Arena"))) {
-					arenaManager.deleteArena(player, arenaName);
-					event.setCancelled(true);
-					player.closeInventory();
-				} else {
-					event.setCancelled(true);
+					joiningArena.remove(player.getName());
+
 				}
+
+				if (managingArena.contains(player.getName())) {
+
+					arenaGui.openArenaManagerGUI(player,
+							ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName()));
+					event.setCancelled(true);
+					managingArena.remove(player.getName());
+				}
+			}
+		}
+
+		if (clickedInv.getName().contains("Arena Manager: ")) {
+			String name = clickedItem.getItemMeta().getDisplayName();
+			String arenaName = clickedInv.getName().replace("Arena Manager: ", "");
+
+			if (name.equals(rApi.colourize("&6&lSet Spawn"))) {
+				arenaManager.setArenaSpawn(player, arenaName);
+				event.setCancelled(true);
+				player.closeInventory();
+			} else if (name.equals(rApi.colourize("&6&lDelete Arena"))) {
+				arenaManager.deleteArena(player, arenaName);
+				event.setCancelled(true);
+				player.closeInventory();
+			} else {
+				event.setCancelled(true);
 			}
 		}
 	}

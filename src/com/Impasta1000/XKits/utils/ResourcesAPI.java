@@ -44,7 +44,6 @@ public class ResourcesAPI {
 		helpMenu.add("  &9&nPlayer Commands");
 		helpMenu.add("  &f/xkits &e- Opens XKits GUI.");
 		helpMenu.add("  &f/xkits help &e- Shows help.");
-		helpMenu.add("  &f/xkits join &6<arenaName> &e- Join KitPVP Arena.");
 		helpMenu.add("  &f/xkits kits &e- Open Kits GUI.");
 		helpMenu.add("  &f/xkits spawn &e- Teleport to Arena spawn.");
 		helpMenu.add(" ");

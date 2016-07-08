@@ -23,11 +23,13 @@ public class ArenaManager {
 	private ConfigManager configManager;
 	private ResourcesAPI rApi;
 	private XKits plugin;
+	private PlayerManager playerManager;
 
 	public ArenaManager(XKits plugin) {
 		this.plugin = plugin;
-		this.configManager = new ConfigManager(plugin);
-		this.rApi = new ResourcesAPI(plugin);
+		configManager = new ConfigManager(plugin);
+		rApi = new ResourcesAPI(plugin);
+		playerManager = new PlayerManager(plugin);
 	}
 	
 	public void createNormalArena(Player player, String arenaName) {
@@ -38,6 +40,24 @@ public class ArenaManager {
 		saveCustomConfig(configManager.getConfigFile(ConfigFile.ARENAS), arenaConfig);
 		
 		rApi.sendColouredMessage(player, "&6&l(!) &6KitPVP Arena '&9" + arenaName + "&6' has been created. Please proceed to set the Spawn through the GUI.");
+	}
+	
+	public void joinArena(Player player, String arenaName) {
+		if (!checkArenaInFile(player, arenaName)) {
+			return;
+		}
+		
+		if (plugin.getPlayersInArenaMap().containsKey(player.getName())) {
+			rApi.sendColouredMessage(player, "&c(!) You are already in a KitPVP Arena.");
+			rApi.sendColouredMessage(player, "&6(!) Current Arena: &9" + plugin.getPlayersInArenaMap().get(player.getName()));
+		} else {
+			plugin.getPlayersInArenaMap().put(player.getName(), arenaName);
+			rApi.sendColouredMessage(player, "&6(!) You have &ajoined &6KitPVP Arena &9" + arenaName + "&6.");
+			teleportToArenaSpawn(player, arenaName);
+			rApi.removeAllPotionEffects(player);
+			playerManager.saveInvToHashMap(player, plugin.getPlayerInventories());
+			player.getInventory().clear();
+		}
 	}
 
 	public void setArenaSpawn(Player player, String arenaName) {

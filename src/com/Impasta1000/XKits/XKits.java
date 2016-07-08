@@ -22,19 +22,7 @@ public class XKits extends JavaPlugin {
 		return plugin;
 	}
 
-	/*
-	 * HashMap to store the players in the arenas
-	 * 
-	 * @param playerName, arenaName
-	 */
-
 	private HashMap<String, String> playersInArena = new HashMap<String, String>();
-	
-	/*
-	 * HashMap to store player inventories when they join KitPVP Arena
-	 * 
-	 * @param playerUUID, itemStack[]
-	 */
 	private HashMap<String, ItemStack[]> playerInventories = new HashMap<String, ItemStack[]>();
 	private HashMap<String, String> messages = new HashMap<String, String>();
 
