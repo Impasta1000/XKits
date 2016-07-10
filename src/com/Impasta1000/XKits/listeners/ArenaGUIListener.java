@@ -15,7 +15,9 @@ import org.bukkit.inventory.ItemStack;
 
 import com.Impasta1000.XKits.XKits;
 import com.Impasta1000.XKits.gui.ArenaGUI;
+import com.Impasta1000.XKits.permissions.Permissions;
 import com.Impasta1000.XKits.utils.ArenaManager;
+import com.Impasta1000.XKits.utils.PlayerManager;
 import com.Impasta1000.XKits.utils.ResourcesAPI;
 
 public class ArenaGUIListener implements Listener {
@@ -24,12 +26,16 @@ public class ArenaGUIListener implements Listener {
 	private ArenaManager arenaManager;
 	private XKits plugin;
 	private ArenaGUI arenaGui;
+	private Permissions Permissions;
+	private PlayerManager playerManager;
 
 	public ArenaGUIListener(XKits plugin) {
 		this.plugin = plugin;
 		rApi = new ResourcesAPI(plugin);
 		arenaManager = new ArenaManager(plugin);
 		arenaGui = new ArenaGUI(plugin);
+		Permissions = new Permissions();
+		playerManager = new PlayerManager(plugin);
 	}
 
 	private HashSet<String> creatingArena = new HashSet<String>();
@@ -70,7 +76,7 @@ public class ArenaGUIListener implements Listener {
 				if (name.equals(rApi.colourize("&6&lList Arenas"))
 						&& clickedItem.getType() == Material.BOOK_AND_QUILL) {
 
-					if (!rApi.checkPerm(player, "XKits.Arena.List")) {
+					if (!rApi.checkPerm(player, Permissions.ARENA_LIST)) {
 						rApi.sendColouredMessage(player, plugin.getMessages().get("NO-PERMISSION"));
 						event.setCancelled(true);
 						player.closeInventory();
@@ -84,7 +90,7 @@ public class ArenaGUIListener implements Listener {
 				}
 				if (name.equals(rApi.colourize("&6&lManage Arena")) || clickedItem.getType() == Material.IRON_SWORD) {
 
-					if (!rApi.checkPerm(player, "XKits.Arena.Manage")) {
+					if (!rApi.checkPerm(player, Permissions.ARENA_MANAGE)) {
 						rApi.sendColouredMessage(player, plugin.getMessages().get("NO-PERMISSION"));
 						event.setCancelled(true);
 						player.closeInventory();
@@ -99,7 +105,7 @@ public class ArenaGUIListener implements Listener {
 				if (name.equals(rApi.colourize("&6&lCreate a new Arena"))
 						&& clickedItem.getType() == Material.FENCE_GATE) {
 
-					if (!rApi.checkPerm(player, "XKits.Arena.Manage")) {
+					if (!rApi.checkPerm(player, Permissions.ARENA_CREATE)) {
 						rApi.sendColouredMessage(player, plugin.getMessages().get("NO-PERMISSION"));
 						event.setCancelled(true);
 						player.closeInventory();
@@ -140,6 +146,19 @@ public class ArenaGUIListener implements Listener {
 					joiningArena.add(player.getName());
 					event.setCancelled(true);
 
+				} if (name.equals(rApi.colourize("&6&lLeave Arena")) && clickedItem.getType() == Material.WOOD_DOOR) {
+					if (!plugin.getPlayersInArenaMap().containsKey(player.getName())) {
+						rApi.sendColouredMessage(player, "&c(!) You are not in a KitPVP Arena.");
+						event.setCancelled(true);
+						player.closeInventory();
+					} else {
+						rApi.sendColouredMessage(player, "&6(!) You have &cleft &6KitPVP &9" + plugin.getPlayersInArenaMap().get(player.getName()) + "&6.");
+						plugin.getPlayersInArenaMap().remove(player.getName());
+						player.getInventory().clear();
+						playerManager.loadInvFromMap(player, plugin.getPlayerInventories());
+						event.setCancelled(true);
+						player.closeInventory();
+					}	
 				} else {
 					event.setCancelled(true);
 				}

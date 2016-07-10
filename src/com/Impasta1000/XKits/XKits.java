@@ -13,6 +13,7 @@ import com.Impasta1000.XKits.config.ConfigManager.ConfigFile;
 import com.Impasta1000.XKits.config.LocaleManager;
 import com.Impasta1000.XKits.listeners.ArenaGUIListener;
 import com.Impasta1000.XKits.listeners.KitsGUIListener;
+import com.Impasta1000.XKits.utils.PlayerManager;
 
 public class XKits extends JavaPlugin {
 
@@ -23,7 +24,7 @@ public class XKits extends JavaPlugin {
 	}
 
 	private HashMap<String, String> playersInArena = new HashMap<String, String>();
-	private HashMap<String, ItemStack[]> playerInventories = new HashMap<String, ItemStack[]>();
+	private HashMap<String, ItemStack[]> playerInventories  = new HashMap<String, ItemStack[]>();
 	private HashMap<String, String> messages = new HashMap<String, String>();
 
 	public HashMap<String, String> getPlayersInArenaMap() {
@@ -41,11 +42,13 @@ public class XKits extends JavaPlugin {
 	private ConfigManager configManager;
 	private CommandsHandler commandsHandler;
 	private LocaleManager localeManager;
+	private PlayerManager playerManager;
 
 	public void onEnable() {
 		configManager = new ConfigManager(this);
 		commandsHandler = new CommandsHandler(this);
 		localeManager = new LocaleManager(this);
+		playerManager = new PlayerManager(this);
 
 		plugin = this;
 
@@ -57,11 +60,13 @@ public class XKits extends JavaPlugin {
 
 	public void onDisable() {
 		
-		Player player;
 		for (String p : playersInArena.keySet()) {
-			player = Bukkit.getPlayerExact(p);
+			Player player = Bukkit.getPlayerExact(p);
 			player.getInventory().clear();
-			player.getInventory().setContents(playerInventories.get(player.getName()));
+			if (getPlayerInventories().get(player.getUniqueId().toString()) != null) {
+				playerManager.loadInvFromMap(player, getPlayerInventories());
+			}
+				
 		}
 		playersInArena.clear();
 		playerInventories.clear();

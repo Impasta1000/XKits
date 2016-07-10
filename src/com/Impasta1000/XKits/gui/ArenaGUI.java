@@ -35,7 +35,7 @@ public class ArenaGUI {
 	public void openXKitsGUI(Player player) {
 
 		boolean isPlayerInArena = arenaManager.checkPlayerInArena(player);
-		ItemStack currentArena, displayArena, manageArena, fillerItem, createArena, joinArena;
+		ItemStack currentArena, displayArena, manageArena, fillerItem, createArena, joinArena, leaveArena;
 		Inventory arenaGui = Bukkit.createInventory(null, 9, "XKits");
 
 		displayArena = rApi.createCustomItem(Material.BOOK_AND_QUILL, 1, "&6&lList Arenas", "&7Display list of arenas");
@@ -46,19 +46,23 @@ public class ArenaGUI {
 
 		if (isPlayerInArena) {
 			currentArena = rApi.createCustomItem(Material.IRON_CHESTPLATE, 1, "&6&lArena", "&7You are currently in &e" + plugin.getPlayersInArenaMap().get(player.getName()));
+			leaveArena = rApi.createCustomItem(Material.WOOD_DOOR, 1, "&6&lLeave Arena", "&7Leave your current KitPVP Arena");
 		} else {
 			currentArena = rApi.createCustomItem(Material.IRON_CHESTPLATE, 1, "&6&lArena", "&7You are currently not in any KitPVP Arena");
+			leaveArena = rApi.createCustomItem(Material.WOOD_DOOR, 1, "&6&lLeave Arena", "&7You are currently not in any KitPVP Arena");
 		}
 
 		if (!player.hasPermission("XKits.Arena.Manage")) {
 			arenaGui.setItem(0, displayArena);
 			arenaGui.setItem(1, joinArena);
+			arenaGui.setItem(2, leaveArena);
 			arenaGui.setItem(arenaGui.getSize() - 1, currentArena);
 		} else {
 			arenaGui.setItem(0, displayArena);
 			arenaGui.setItem(1, joinArena);
-			arenaGui.setItem(2, createArena);
-			arenaGui.setItem(3, manageArena);
+			arenaGui.setItem(2, leaveArena);
+			arenaGui.setItem(3, createArena);
+			arenaGui.setItem(4, manageArena);
 			arenaGui.setItem(arenaGui.getSize() - 1, currentArena);
 		}
 
