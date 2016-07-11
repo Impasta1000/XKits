@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.Impasta1000.XKits.XKits;
 import com.Impasta1000.XKits.gui.ArenaGUI;
+import com.Impasta1000.XKits.permissions.Messages;
 import com.Impasta1000.XKits.permissions.Permissions;
 import com.Impasta1000.XKits.utils.ArenaManager;
 import com.Impasta1000.XKits.utils.PlayerManager;
@@ -28,6 +29,7 @@ public class ArenaGUIListener implements Listener {
 	private ArenaGUI arenaGui;
 	private Permissions Permissions;
 	private PlayerManager playerManager;
+	private Messages Messages;
 
 	public ArenaGUIListener(XKits plugin) {
 		this.plugin = plugin;
@@ -36,6 +38,7 @@ public class ArenaGUIListener implements Listener {
 		arenaGui = new ArenaGUI(plugin);
 		Permissions = new Permissions();
 		playerManager = new PlayerManager(plugin);
+		Messages = new Messages(plugin);
 	}
 
 	private HashSet<String> creatingArena = new HashSet<String>();
@@ -77,7 +80,7 @@ public class ArenaGUIListener implements Listener {
 						&& clickedItem.getType() == Material.BOOK_AND_QUILL) {
 
 					if (!rApi.checkPerm(player, Permissions.ARENA_LIST)) {
-						rApi.sendColouredMessage(player, plugin.getMessages().get("NO-PERMISSION"));
+						rApi.sendColouredMessage(player, Messages.NOPERMISSION);
 						event.setCancelled(true);
 						player.closeInventory();
 						return;
@@ -91,7 +94,7 @@ public class ArenaGUIListener implements Listener {
 				if (name.equals(rApi.colourize("&6&lManage Arena")) || clickedItem.getType() == Material.IRON_SWORD) {
 
 					if (!rApi.checkPerm(player, Permissions.ARENA_MANAGE)) {
-						rApi.sendColouredMessage(player, plugin.getMessages().get("NO-PERMISSION"));
+						rApi.sendColouredMessage(player, Messages.NOPERMISSION);
 						event.setCancelled(true);
 						player.closeInventory();
 						return;
@@ -102,11 +105,10 @@ public class ArenaGUIListener implements Listener {
 					arenaGui.openArenaSelectorGUI(player);
 
 				}
-				if (name.equals(rApi.colourize("&6&lCreate a new Arena"))
-						&& clickedItem.getType() == Material.FENCE_GATE) {
+				if (name.equals(rApi.colourize("&6&lCreate a new Arena")) && clickedItem.getType() == Material.FENCE_GATE) {
 
 					if (!rApi.checkPerm(player, Permissions.ARENA_CREATE)) {
-						rApi.sendColouredMessage(player, plugin.getMessages().get("NO-PERMISSION"));
+						rApi.sendColouredMessage(player, Messages.NOPERMISSION);
 						event.setCancelled(true);
 						player.closeInventory();
 						return;
@@ -120,15 +122,13 @@ public class ArenaGUIListener implements Listener {
 					creatingArena.add(player.getName());
 					event.setCancelled(true);
 					player.closeInventory();
-					rApi.sendColouredMessage(player,
-							"&6&l(!) &6Please enter the name of the Arena. You have &c30 seconds &6to do so.");
+					rApi.sendColouredMessage(player, "&6&l(!) &6Please enter the name of the Arena. You have &c30 seconds &6to do so.");
 
 					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 						public void run() {
 							if (creatingArena.contains(player.getName())) {
 								creatingArena.remove(player.getName());
-								rApi.sendColouredMessage(player,
-										"&c&l(!) &cYou did not enter the name in time. Please restart if you want to create a new KitPVP Arena.");
+								rApi.sendColouredMessage(player, "&c&l(!) &cYou did not enter the name in time. Please restart if you want to create a new KitPVP Arena.");
 							}
 						}
 					}, 600);
@@ -170,14 +170,14 @@ public class ArenaGUIListener implements Listener {
 			if (clickedItem.getType() == Material.COMPASS) {
 
 				if (joiningArena.contains(player.getName())) {
-
+					player.sendMessage("DEBUG 1");
 					arenaManager.joinArena(player, ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName()));
 					event.setCancelled(true);
 					joiningArena.remove(player.getName());
 
 				}
 
-				if (managingArena.contains(player.getName())) {
+				else if (managingArena.contains(player.getName())) {
 
 					arenaGui.openArenaManagerGUI(player,
 							ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName()));

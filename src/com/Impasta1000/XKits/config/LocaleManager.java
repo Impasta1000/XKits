@@ -14,13 +14,13 @@ public class LocaleManager {
 		
 	}
 
-	public String getLocaleMessage(String name) {
+	public String getLocaleMessage(String configPath) {
 		configManager.loadConfig(ConfigFile.LOCALE);
 		FileConfiguration config = configManager.getConfig(ConfigFile.LOCALE);
 		
-		name = config.getString(name);
+		configPath = config.getString(configPath);
 		
-		return name;
+		return configPath;
 	}
 
 	public String replacePlaceholders(String string) {
@@ -28,6 +28,7 @@ public class LocaleManager {
 		FileConfiguration config = configManager.getConfig(ConfigFile.LOCALE);
 		
 		string = string.replace("%prefix%", config.getString("Configuration.Prefix"));
+		string = string.replace("%prefix2%", config.getString("Configuration.Prefix2"));
 		return string;
 	}
 }

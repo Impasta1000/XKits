@@ -4,17 +4,28 @@
 #                                          #
 ############################################
 
+# Placeholders:
+#   %prefix% - Prefix
+#   %prefix2% - Prefix2
+#   %arena_name% - Arena Name
+
 Configuration:
 
-    # Prefix is usually displayed in front of messages
     # Placeholder: %prefix%
     Prefix: "&c&l(!)"
+    
+    # Placeholder: %prefix2%
+    # Additional preifx for usage
+    Prefix2: "&6&l(!)"
 
 # Messages are configurable    
 Messages:
     
     # Displayed when a player tries to access something he does not have permission for
-    no-permission: "%prefix% &cYou have insufficient permission!"
+    NoPermission: "%prefix% &cYou have insufficient permission!"
     
     # Displayed when there are not enough arguments
-    insufficient-arguments: "%prefix% &cInsufficient arguments! Please check &6/xkits help &cfor more info."
+    InsufficientArguments: "%prefix% &cInsufficient arguments! Please check &6/xkits help &cfor more info."
+    
+    # Displayed when player successfully joins an Arena
+    PlayerJoinedArena: "%prefix2% &6You have &ajoined &9%arena_name%&6."

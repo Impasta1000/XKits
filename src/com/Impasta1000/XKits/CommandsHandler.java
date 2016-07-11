@@ -22,11 +22,11 @@ public class CommandsHandler implements CommandExecutor {
 	
 	public CommandsHandler(XKits plugin) {
 		this.plugin = plugin;
-		this.arenaManager = new ArenaManager(plugin);
-		this.rApi = new ResourcesAPI(plugin);
-		this.kitGui = new KitGUI(plugin);
-		this.playerManager = new PlayerManager(plugin);
-		this.arenaGui = new ArenaGUI(plugin);
+		arenaManager = new ArenaManager(plugin);
+		rApi = new ResourcesAPI(plugin);
+		kitGui = new KitGUI(plugin);
+		playerManager = new PlayerManager(plugin);
+		arenaGui = new ArenaGUI(plugin);
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

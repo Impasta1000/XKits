@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import com.Impasta1000.XKits.XKits;
 import com.Impasta1000.XKits.config.ConfigManager;
 import com.Impasta1000.XKits.config.ConfigManager.ConfigFile;
+import com.Impasta1000.XKits.permissions.Messages;
 
 public class ArenaManager {
 
@@ -24,12 +25,14 @@ public class ArenaManager {
 	private ResourcesAPI rApi;
 	private XKits plugin;
 	private PlayerManager playerManager;
+	private Messages Messages;
 
 	public ArenaManager(XKits plugin) {
 		this.plugin = plugin;
 		configManager = new ConfigManager(plugin);
 		rApi = new ResourcesAPI(plugin);
 		playerManager = new PlayerManager(plugin);
+		Messages = new Messages(plugin);
 	}
 	
 	public void createNormalArena(Player player, String arenaName) {
@@ -52,7 +55,7 @@ public class ArenaManager {
 			rApi.sendColouredMessage(player, "&6(!) Current Arena: &9" + plugin.getPlayersInArenaMap().get(player.getName()));
 		} else {
 			plugin.getPlayersInArenaMap().put(player.getName(), arenaName);
-			rApi.sendColouredMessage(player, "&6(!) You have &ajoined &6KitPVP Arena &9" + arenaName + "&6.");
+			rApi.sendColouredMessage(player, Messages.PLAYERJOINEDARENA.replace("%arena_name%", arenaName));
 			teleportToArenaSpawn(player, arenaName);
 			rApi.removeAllPotionEffects(player);
 			playerManager.saveInvToHashMap(player, plugin.getPlayerInventories());

@@ -10,7 +10,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.Impasta1000.XKits.config.ConfigManager;
 import com.Impasta1000.XKits.config.ConfigManager.ConfigFile;
-import com.Impasta1000.XKits.config.LocaleManager;
 import com.Impasta1000.XKits.listeners.ArenaGUIListener;
 import com.Impasta1000.XKits.listeners.KitsGUIListener;
 import com.Impasta1000.XKits.utils.PlayerManager;
@@ -25,7 +24,6 @@ public class XKits extends JavaPlugin {
 
 	private HashMap<String, String> playersInArena = new HashMap<String, String>();
 	private HashMap<String, ItemStack[]> playerInventories  = new HashMap<String, ItemStack[]>();
-	private HashMap<String, String> messages = new HashMap<String, String>();
 
 	public HashMap<String, String> getPlayersInArenaMap() {
 		return playersInArena;
@@ -34,20 +32,14 @@ public class XKits extends JavaPlugin {
 	public HashMap<String, ItemStack[]> getPlayerInventories() {
 		return playerInventories;
 	}
-	
-	public HashMap<String, String> getMessages() {
-		return messages;
-	}
 
 	private ConfigManager configManager;
 	private CommandsHandler commandsHandler;
-	private LocaleManager localeManager;
 	private PlayerManager playerManager;
 
 	public void onEnable() {
 		configManager = new ConfigManager(this);
 		commandsHandler = new CommandsHandler(this);
-		localeManager = new LocaleManager(this);
 		playerManager = new PlayerManager(this);
 
 		plugin = this;
@@ -55,7 +47,6 @@ public class XKits extends JavaPlugin {
 		loadConfigs();
 		registerCommands();
 		registerEvents();
-		loadLocalization();
 	}
 
 	public void onDisable() {
@@ -85,11 +76,6 @@ public class XKits extends JavaPlugin {
 		PluginManager PM = Bukkit.getPluginManager();
 		PM.registerEvents(new KitsGUIListener(this), this);
 		PM.registerEvents(new ArenaGUIListener(this), this);
-	}
-	
-	private void loadLocalization() {
-		messages.put("NO-PERMISSION", localeManager.replacePlaceholders(localeManager.getLocaleMessage("Messages.no-permission")));
-		messages.put("INSUFFICIENT-ARGUMENTS", localeManager.replacePlaceholders(localeManager.getLocaleMessage("Messages.insufficient-arguments")));
 	}
 
 }
